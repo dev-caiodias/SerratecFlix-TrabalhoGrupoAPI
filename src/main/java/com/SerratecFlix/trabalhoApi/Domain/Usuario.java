@@ -8,8 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "usuario")
@@ -21,20 +22,25 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column
     @NotBlank
     private String nome;
+
     @Column
     @Email
     private String email;
-    @Column
+
+    @Column(unique = true)
     @Size(max = 20)
     private String userName;
-    @Column
+
     @NotBlank
     @Size(min = 8)
     private String senha;
+
     @Column
-    private LocalDate dataCriacao;
+    @CreationTimestamp
+    private LocalDateTime dataCriacao;
 
 }
