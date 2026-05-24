@@ -26,7 +26,7 @@ public class Categoria {
 
     @NotBlank(message = "Este campo deve ser preenchido.") 
     @Size(max = 50)
-    @Column(name = "nome", length = 50, nullable = false)
+    @Column(name = "nome", length = 50, nullable = false, unique = true)
     private String nome;
 
     @Size(max = 100)
