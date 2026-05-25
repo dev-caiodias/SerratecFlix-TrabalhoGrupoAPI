@@ -19,6 +19,7 @@ public class UsuarioDTORequest {
     @Email
     private String email;
     @NotBlank
+    @Size(max = 20)
     private String userName;
     @NotBlank
     @Size(min = 8)
