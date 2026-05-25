@@ -1,5 +1,24 @@
 package com.SerratecFlix.trabalhoApi.Domain;
 
+<<<<<<< HEAD
+import jakarta.persistence.*;
+import lombok.Data;
+
+
+@Entity
+@Data
+public class AvaliacaoFilme {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "filme_id")
+    private Filme filme;
+}
+
+//Classe temporaria pra testes
+=======
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -117,3 +136,4 @@ public class AvaliacaoFilme {
     
 
 }
+>>>>>>> origin/main
