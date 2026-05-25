@@ -1,5 +1,21 @@
 package com.SerratecFlix.trabalhoApi.Domain;
 
+<<<<<<< HEAD
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Entity
+@Data
+public class Categoria {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String nome;
+}
+
+//Classe temporaria pra testes
+=======
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -120,3 +136,4 @@ public class Categoria {
     
 
 }
+>>>>>>> origin/main
