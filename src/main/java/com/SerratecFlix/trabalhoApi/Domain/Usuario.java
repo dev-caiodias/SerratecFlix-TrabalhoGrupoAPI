@@ -13,6 +13,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "usuario")
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -76,6 +76,4 @@ public class AvaliacaoFilmeDTOResponse {
     public void setTituloFilme(String tituloFilme) {
         this.tituloFilme = tituloFilme;
     }
-
-    
 }
