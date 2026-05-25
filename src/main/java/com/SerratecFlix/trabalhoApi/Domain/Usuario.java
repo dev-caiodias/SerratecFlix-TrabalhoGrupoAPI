@@ -1,15 +1,15 @@
 package com.SerratecFlix.trabalhoApi.Domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "usuario")
@@ -17,24 +17,43 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
+@EqualsAndHashCode(exclude = {"avaliacoesFilme", "avaliacoesSerie", "listaFavoritos"})
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column
     @NotBlank
     private String nome;
+
     @Column
     @Email
     private String email;
-    @Column
+
+    @Column(unique = true)
     @Size(max = 20)
     private String userName;
-    @Column
+
     @NotBlank
     @Size(min = 8)
     private String senha;
+
     @Column
-    private LocalDate dataCriacao;
+    @CreationTimestamp
+    private LocalDateTime dataCriacao;
+
+    @OneToMany(mappedBy = "usuario")
+    @JsonManagedReference
+    private List<AvaliacaoFilme> avaliacoesFilme;
+
+    @OneToMany(mappedBy = "usuario")
+    @JsonManagedReference
+    private List<AvaliacaoSerie> avaliacoesSerie;
+
+    @OneToMany(mappedBy = "usuario")
+    @JsonManagedReference
+    private List<ListaFavoritos> listaFavoritos;
 
 }
