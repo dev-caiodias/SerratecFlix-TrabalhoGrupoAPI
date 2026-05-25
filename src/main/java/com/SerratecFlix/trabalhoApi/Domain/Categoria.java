@@ -12,3 +12,5 @@ public class Categoria {
     private Long id;
     private String nome;
 }
+
+//Classe temporaria pra testes
