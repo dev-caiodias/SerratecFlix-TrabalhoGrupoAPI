@@ -1,5 +1,8 @@
 package com.SerratecFlix.trabalhoApi.Service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import com.SerratecFlix.trabalhoApi.Dto.Response.FilmeRankingResponse;
 import com.SerratecFlix.trabalhoApi.Domain.Filme;
 import com.SerratecFlix.trabalhoApi.Domain.Categoria;
 import com.SerratecFlix.trabalhoApi.Dto.Request.FilmeRequestDTO;
@@ -109,4 +112,56 @@ public class FilmeService {
                 .categorias(nomesCategorias)
                 .build();
     }
+
+    public Page<FilmeRankingResponse> obterRankingGeral(Pageable pageable) {
+        Page<Filme> filmesPaginados = filmeRepository.findRankingGeral(pageable);
+        int startPosicao = (int) pageable.getOffset() + 1;
+
+        return filmesPaginados.map(filme -> {
+            int index = filmesPaginados.getContent().indexOf(filme);
+            return converterParaRankingResponse(filme, startPosicao + index);
+        });
+    }
+
+    public Page<FilmeRankingResponse> obterRankingPorCategoria(Long categoriaId, Pageable pageable) {
+        if (!categoriaRepository.existsById(categoriaId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada");
+        }
+        Page<Filme> filmesPaginados = filmeRepository.findRankingPorCategoria(categoriaId, pageable);
+        int startPosicao = (int) pageable.getOffset() + 1;
+
+        return filmesPaginados.map(filme -> {
+            int index = filmesPaginados.getContent().indexOf(filme);
+            return converterParaRankingResponse(filme, startPosicao + index);
+        });
+    }
+
+    @Transactional
+    public FilmeResponseDTO destacarFilme(Long id) {
+        Filme filme = findByFilmeId(id);
+        if (!filme.getTitulo().startsWith("[DESTAQUE]")) {
+            filme.setTitulo("[DESTAQUE] " + filme.getTitulo());
+        }
+        return converterParaResponse(filmeRepository.save(filme));
+    }
+
+    @Transactional
+    public FilmeResponseDTO removerDestaque(Long id) {
+        Filme filme = findByFilmeId(id);
+        if (filme.getTitulo().startsWith("[DESTAQUE]")) {
+            filme.setTitulo(filme.getTitulo().replace("[DESTAQUE] ", ""));
+        }
+        return converterParaResponse(filmeRepository.save(filme));
+    }
+
+    private FilmeRankingResponse converterParaRankingResponse(Filme filme, int posicao) {
+        int totalAvaliacoes = filme.getAvaliacoes() != null ? filme.getAvaliacoes().size() : 0;
+
+        return FilmeRankingResponse.builder()
+                .posicao(posicao)
+                .filme(converterParaResponse(filme))
+                .totalAvaliacoes(totalAvaliacoes)
+                .build();
+    }
+
 }
