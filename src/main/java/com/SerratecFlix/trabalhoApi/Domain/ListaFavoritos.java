@@ -3,9 +3,14 @@ package com.SerratecFlix.trabalhoApi.Domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
 import java.time.LocalDate;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ListaFavoritos {
 
     @Id
@@ -15,7 +20,7 @@ public class ListaFavoritos {
 
     @NotBlank
     @Column(name = "", nullable = false)
-    private String nomeLista;
+    private String favoritos;
 
 
     private boolean privada;
@@ -28,15 +33,19 @@ public class ListaFavoritos {
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     @JsonBackReference
+    private Usuario usuario;
 
 
     @ManyToMany
     @JoinTable(name = "lista_filme", joinColumns = @JoinColumn(name = "lista_id"),
     inverseJoinColumns = @JoinColumn(name = "filme_id"))
+    private Filme filme;
 
 
     @ManyToMany
     @JoinTable(name = "lista_serie", joinColumns = @JoinColumn(name = "lista_id"),
     inverseJoinColumns = @JoinColumn(name = "serie_id"))
+    private Serie serie;
+
 
 }
