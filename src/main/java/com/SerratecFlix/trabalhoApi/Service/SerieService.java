@@ -4,15 +4,18 @@ import com.SerratecFlix.trabalhoApi.Domain.Serie;
 import com.SerratecFlix.trabalhoApi.Domain.Categoria;
 import com.SerratecFlix.trabalhoApi.Dto.Request.SerieRequestDTO;
 import com.SerratecFlix.trabalhoApi.Dto.Response.SerieResponseDTO;
+import com.SerratecFlix.trabalhoApi.Dto.SerieStatsResponse;
 import com.SerratecFlix.trabalhoApi.Repository.SerieRepository;
 import com.SerratecFlix.trabalhoApi.Repository.CategoriaRepository;
 import com.SerratecFlix.trabalhoApi.Repository.AvaliacaoSerieRepository;
+import com.SerratecFlix.trabalhoApi.Domain.AvaliacaoSerie; // Garante o import da entidade de avaliação
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,13 +24,16 @@ public class SerieService {
     private final SerieRepository serieRepository;
     private final CategoriaRepository categoriaRepository;
     private final AvaliacaoSerieRepository avaliacaoSerieRepository;
+    private final OmdbService omdbService;
 
     public SerieService(SerieRepository serieRepository, 
                         CategoriaRepository categoriaRepository, 
-                        AvaliacaoSerieRepository avaliacaoSerieRepository) {
+                        AvaliacaoSerieRepository avaliacaoSerieRepository,
+                        OmdbService omdbService) {
         this.serieRepository = serieRepository;
         this.categoriaRepository = categoriaRepository;
         this.avaliacaoSerieRepository = avaliacaoSerieRepository;
+        this.omdbService = omdbService;
     }
 
     @Transactional(readOnly = true)
@@ -65,7 +71,7 @@ public class SerieService {
                 .episodios(request.getEpisodios())
                 .dataLancamento(request.getDataLancamento())
                 .categorias(categorias)
-                .notaMedia(0.0) // Inicia zerada
+                .notaMedia(0.0)
                 .build();
 
         return converterParaDTO(serieRepository.save(serie));
@@ -108,6 +114,46 @@ public class SerieService {
       
         serie.setNotaMedia(mediaCalculada != null ? mediaCalculada : 0.0);
         serieRepository.save(serie);
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, Object> obterInformacaoExterna(Long id) {
+        Serie serie = serieRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Série não localizada."));
+
+        Map<String, Object> dados = omdbService.buscarDadosExternos(serie.getTitulo());
+        if (dados == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Dados não encontrados na OMDb para o título desta série.");
+        }
+        return dados;
+    }
+
+    @Transactional(readOnly = true)
+    public SerieStatsResponse obterEstatisticas(Long id) {
+        Serie serie = serieRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Série não localizada."));
+
+        var listaAvaliacoes = serie.getAvaliacoes();
+        long total = listaAvaliacoes != null ? listaAvaliacoes.size() : 0;
+
+        double max = total > 0 ? listaAvaliacoes.stream().mapToDouble(AvaliacaoSerie::getNota).max().orElse(0.0) : 0.0;
+        double min = total > 0 ? listaAvaliacoes.stream().mapToDouble(AvaliacaoSerie::getNota).min().orElse(0.0) : 0.0;
+        double mediaGlobal = serie.getNotaMedia() != null ? serie.getNotaMedia() : 0.0;
+
+        double mediaEpisodiosPorTemporada = 0.0;
+        if (serie.getTemporadas() != null && serie.getTemporadas() > 0 && serie.getEpisodios() != null) {
+            mediaEpisodiosPorTemporada = (double) serie.getEpisodios() / serie.getTemporadas();
+        }
+
+        return SerieStatsResponse.builder()
+                .serieId(serie.getId())
+                .titulo(serie.getTitulo())
+                .totalAvaliacoes(total)
+                .notaMediaGlobal(mediaGlobal)
+                .notaMaxima(max)
+                .notaMinima(min)
+                .mediaEpisodiosPorTemporada(mediaEpisodiosPorTemporada)
+                .build();
     }
 
     private SerieResponseDTO converterParaDTO(Serie serie) {
