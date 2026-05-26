@@ -25,4 +25,14 @@ public interface FilmeRepository extends JpaRepository<Filme, Long> {
     @Query("SELECT f FROM Filme f JOIN f.categorias c WHERE c.id = :categoriaId AND f.notaMedia IS NOT NULL ORDER BY f.notaMedia DESC")
     Page<Filme> findRankingPorCategoria(@Param("categoriaId") Long categoriaId, Pageable pageable);
 
+
+    @Query("""
+    SELECT DISTINCT f FROM Filme f JOIN f.categorias c
+    WHERE (:categoria IS NULL OR LOWER(c.nome) = LOWER(:categoria))
+    AND (:notaMinima IS NULL OR f.notaMedia >= :notaMinima)
+    """)
+    Page<Filme> filtrarCatalogo(@Param("categoria") String categoria,
+                                @Param("notaMinima") Double notaMinima,
+                                Pageable pageable);
+
 }
