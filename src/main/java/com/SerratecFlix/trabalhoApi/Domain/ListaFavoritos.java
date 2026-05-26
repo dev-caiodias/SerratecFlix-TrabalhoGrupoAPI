@@ -4,10 +4,14 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "favoritos")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,7 +28,8 @@ public class ListaFavoritos {
 
     private boolean privada;
 
-    @Column
+    @Column(name = "dataCriacao", nullable = false, updatable = false)
+    @CreationTimestamp
     private LocalDate dataCriacao;
 
     @ManyToOne
@@ -36,13 +41,23 @@ public class ListaFavoritos {
     @ManyToMany
     @JoinTable(name = "lista_filme", joinColumns = @JoinColumn(name = "lista_id"),
     inverseJoinColumns = @JoinColumn(name = "filme_id"))
-    private Filme filme;
+    private List<Filme> filme = new ArrayList<>();
 
 
     @ManyToMany
     @JoinTable(name = "lista_serie", joinColumns = @JoinColumn(name = "lista_id"),
     inverseJoinColumns = @JoinColumn(name = "serie_id"))
-    private Serie serie;
+    private List<Serie> serie = new ArrayList<>();
+
+
+    public void adicionaFilme(Filme filme){
+        this.filme.add(filme);
+    }
+
+    public void adicionaSerie(Serie serie){
+        this.serie.add(serie);
+    }
+
 
 
 }

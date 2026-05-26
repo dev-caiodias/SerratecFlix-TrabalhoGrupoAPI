@@ -4,20 +4,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Getter
-@NoArgsConstructor
-public class ListaFavoritosDTOResponse {
 
-    private Long id;
-    private String favoritos;
-    private LocalDateTime dataCriacao;
-    private String nomeUsuario;
+public record ListaFavoritosDTOResponse(
 
-    public ListaFavoritosDTOResponse(Long id, String nomeLista, LocalDateTime dataCriacao, String nomeUsuario) {
-        this.id = id;
-        this.favoritos = nomeLista;
-        this.dataCriacao = dataCriacao;
-        this.nomeUsuario = nomeUsuario;
-    }
-}
+
+     Long id,
+     String favoritos,
+     LocalDateTime dataCriacao,
+     String nomeUsuario,
+     List<FilmeResponse> filme,
+     List<SerieResponseDTO> serie
+){}
+
+
+
