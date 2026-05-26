@@ -1,65 +1,128 @@
 package com.SerratecFlix.trabalhoApi.Service;
 
 import com.SerratecFlix.trabalhoApi.Domain.Serie;
+import com.SerratecFlix.trabalhoApi.Domain.Categoria;
 import com.SerratecFlix.trabalhoApi.Dto.Request.SerieRequestDTO;
 import com.SerratecFlix.trabalhoApi.Dto.Response.SerieResponseDTO;
 import com.SerratecFlix.trabalhoApi.Repository.SerieRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.SerratecFlix.trabalhoApi.Repository.CategoriaRepository;
+import com.SerratecFlix.trabalhoApi.Repository.AvaliacaoSerieRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class SerieService {
 
-    @Autowired
-    private SerieRepository repository;
+    private final SerieRepository serieRepository;
+    private final CategoriaRepository categoriaRepository;
+    private final AvaliacaoSerieRepository avaliacaoSerieRepository;
 
+    public SerieService(SerieRepository serieRepository, 
+                        CategoriaRepository categoriaRepository, 
+                        AvaliacaoSerieRepository avaliacaoSerieRepository) {
+        this.serieRepository = serieRepository;
+        this.categoriaRepository = categoriaRepository;
+        this.avaliacaoSerieRepository = avaliacaoSerieRepository;
+    }
+
+    @Transactional(readOnly = true)
     public List<SerieResponseDTO> listarTodas() {
-        return repository.findAll().stream()
-                .map(SerieResponseDTO::new)
+        return serieRepository.findAll().stream()
+                .map(this::converterParaDTO)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public SerieResponseDTO buscarPorId(Long id) {
-        Serie serie = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Série com ID " + id + " não encontrada."));
-        return new SerieResponseDTO(serie);
+        Serie serie = serieRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Série não localizada."));
+        return converterParaDTO(serie);
     }
 
-    public SerieResponseDTO salvar(SerieRequestDTO dto) {
-        Serie serie = new Serie();
-        copiarDtoParaEntidade(dto, serie);
-        serie = repository.save(serie);
-        return new SerieResponseDTO(serie);
-    }
-
-    public SerieResponseDTO atualizar(Long id, SerieRequestDTO dto) {
-        Serie serie = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Série com ID " + id + " não encontrada."));
-        copiarDtoParaEntidade(dto, serie);
-        serie = repository.save(serie);
-        return new SerieResponseDTO(serie);
-    }
-
-    public void deletar(Long id) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("Série com ID " + id + " não encontrada.");
-        }
-        repository.deleteById(id);
-    }
-
+    @Transactional(readOnly = true)
     public List<SerieResponseDTO> buscarPorTitulo(String titulo) {
-        return repository.findByTituloContainingIgnoreCase(titulo).stream()
-                .map(SerieResponseDTO::new)
+        return serieRepository.findByTituloContainingIgnoreCase(titulo).stream()
+                .map(this::converterParaDTO)
                 .collect(Collectors.toList());
     }
 
-    private void copiarDtoParaEntidade(SerieRequestDTO dto, Serie entidade) {
-        entidade.setTitulo(dto.getTitulo());
-        entidade.setDescricao(dto.getDescricao());
-        entidade.setTemporadas(dto.getTemporadas());
-        entidade.setEpisodios(dto.getEpisodios());
-        entidade.setDataLancamento(dto.getDataLancamento());
+    @Transactional
+    public SerieResponseDTO salvar(SerieRequestDTO request) {
+        List<Categoria> categorias = categoriaRepository.findAllById(request.getCategoriaIds());
+        if (categorias.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pelo menos uma categoria válida deve ser informada.");
+        }
+
+        Serie serie = Serie.builder()
+                .titulo(request.getTitulo())
+                .descricao(request.getDescricao())
+                .temporadas(request.getTemporadas())
+                .episodios(request.getEpisodios())
+                .dataLancamento(request.getDataLancamento())
+                .categorias(categorias)
+                .notaMedia(0.0) // Inicia zerada
+                .build();
+
+        return converterParaDTO(serieRepository.save(serie));
+    }
+
+    @Transactional
+    public SerieResponseDTO atualizar(Long id, SerieRequestDTO request) {
+        Serie serieExistente = serieRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Série não localizada para atualização."));
+
+        List<Categoria> categorias = categoriaRepository.findAllById(request.getCategoriaIds());
+        if (categorias.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pelo menos uma categoria válida deve ser informada.");
+        }
+
+        serieExistente.setTitulo(request.getTitulo());
+        serieExistente.setDescricao(request.getDescricao());
+        serieExistente.setTemporadas(request.getTemporadas());
+        serieExistente.setEpisodios(request.getEpisodios());
+        serieExistente.setDataLancamento(request.getDataLancamento());
+        serieExistente.setCategorias(categorias);
+
+        return converterParaDTO(serieRepository.save(serieExistente));
+    }
+
+    @Transactional
+    public void deletar(Long id) {
+        if (!serieRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Série não localizada para exclusão.");
+        }
+        serieRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void recalcularNotaMedia(Long serieId) {
+        Serie serie = serieRepository.findById(serieId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Série não localizada para recalcular média."));
+        
+        Double mediaCalculada = avaliacaoSerieRepository.calcularMediaPorSerieId(serieId);
+      
+        serie.setNotaMedia(mediaCalculada != null ? mediaCalculada : 0.0);
+        serieRepository.save(serie);
+    }
+
+    private SerieResponseDTO converterParaDTO(Serie serie) {
+        List<String> nomesCategorias = serie.getCategorias() != null ?
+                serie.getCategorias().stream().map(Categoria::getNome).collect(Collectors.toList()) : List.of();
+
+        return SerieResponseDTO.builder()
+                .id(serie.getId())
+                .titulo(serie.getTitulo())
+                .descricao(serie.getDescricao())
+                .temporadas(serie.getTemporadas())
+                .episodios(serie.getEpisodios())
+                .dataLancamento(serie.getDataLancamento())
+                .notaMedia(serie.getNotaMedia())
+                .nomesCategorias(nomesCategorias)
+                .build();
     }
 }

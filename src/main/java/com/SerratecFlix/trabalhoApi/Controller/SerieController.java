@@ -4,48 +4,52 @@ import com.SerratecFlix.trabalhoApi.Dto.Request.SerieRequestDTO;
 import com.SerratecFlix.trabalhoApi.Dto.Response.SerieResponseDTO;
 import com.SerratecFlix.trabalhoApi.Service.SerieService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/series")
 public class SerieController {
 
-    @Autowired
-    private SerieService service;
+    private final SerieService serieService;
+
+    public SerieController(SerieService serieService) {
+        this.serieService = serieService;
+    }
 
     @GetMapping
-    public ResponseEntity<List<SerieResponseDTO>> obterTodas() {
-        return ResponseEntity.ok(service.listarTodas());
+    public ResponseEntity<List<SerieResponseDTO>> listarTodas() {
+        return ResponseEntity.ok(serieService.listarTodas());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SerieResponseDTO> obterPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(service.buscarPorId(id));
+    public ResponseEntity<SerieResponseDTO> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(serieService.buscarPorId(id));
     }
 
     @GetMapping("/buscar")
-    public ResponseEntity<List<SerieResponseDTO>> obterPorTitulo(@RequestParam String titulo) {
-        return ResponseEntity.ok(service.buscarPorTitulo(titulo));
+    public ResponseEntity<List<SerieResponseDTO>> buscarPorTitulo(@RequestParam String titulo) {
+        return ResponseEntity.ok(serieService.buscarPorTitulo(titulo));
     }
 
     @PostMapping
-    public ResponseEntity<SerieResponseDTO> criar(@Valid @RequestBody SerieRequestDTO dto) {
-        SerieResponseDTO novoDto = service.salvar(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoDto);
+    public ResponseEntity<SerieResponseDTO> cadastrar(@Valid @RequestBody SerieRequestDTO request) {
+        SerieResponseDTO novaSerie = serieService.salvar(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novaSerie);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SerieResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody SerieRequestDTO dto) {
-        return ResponseEntity.ok(service.atualizar(id, dto));
+    public ResponseEntity<SerieResponseDTO> atualizar(@PathVariable Long id,
+            @Valid @RequestBody SerieRequestDTO request) {
+        return ResponseEntity.ok(serieService.atualizar(id, request));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        service.deletar(id);
+        serieService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 }
