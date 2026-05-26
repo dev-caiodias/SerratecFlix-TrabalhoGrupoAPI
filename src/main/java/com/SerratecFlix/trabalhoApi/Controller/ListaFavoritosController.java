@@ -1,6 +1,7 @@
 package com.SerratecFlix.trabalhoApi.Controller;
 
 
+import com.SerratecFlix.trabalhoApi.Domain.ListaFavoritos;
 import com.SerratecFlix.trabalhoApi.Dto.Request.ListaFavoritosDTORequest;
 import com.SerratecFlix.trabalhoApi.Dto.Response.ListaFavoritosDTOResponse;
 import com.SerratecFlix.trabalhoApi.Repository.ListaFavoritosRepository;
@@ -46,18 +47,18 @@ public class ListaFavoritosController {
 
 
     @PostMapping("/listas/{id}/filmes/{filmeId}")
-    @Operation(summary = "Cria uma nova lista para o usuario")
-    public ResponseEntity<ListaFavoritosDTOResponse> criar(@Valid @RequestBody ListaFavoritosDTORequest request){
-        return ResponseEntity.status(HttpStatus.CREATED).body(listaFavoritosService.criar(request));
+    @Operation(summary = "Adiciona filmes na lista")
+    public ResponseEntity<ListaFavoritos> adicionaFilme(@PathVariable Long id, @PathVariable Long filmeId){
+        return ResponseEntity.ok(listaFavoritosService.adicionaFilme(id, filmeId));
     }
 
 
-    @PutMapping
-    @Operation(summary = "Editar ou adicionar a lista")
-    public
-
-
-
+    @PutMapping("/lista/{id}")
+    @Operation(summary = "Editar ou adicionar na lista")
+    public ResponseEntity<ListaFavoritos>atualizar(@PathVariable Long id, @RequestBody @Valid
+                                                   ListaFavoritosDTORequest request){
+        return ResponseEntity.ok(listaFavoritosService.atualizar(id, request));
+    }
 
 
     @DeleteMapping("/{id}")
