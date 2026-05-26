@@ -1,8 +1,6 @@
 package com.SerratecFlix.trabalhoApi.Repository;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.SerratecFlix.trabalhoApi.Domain.AvaliacaoFilme;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,3 +20,5 @@ public interface AvaliacaofilmeRepository extends JpaRepository<AvaliacaoFilme, 
     @Query("SELECT AVG(a.nota) FROM AvaliacaoFilme a WHERE a.filme.id = :filmeId")
     Double calcularMediaPorFilmeId(@Param("filmeId") Long filmeId);
 }
+
+//Classe temporaria pra testes

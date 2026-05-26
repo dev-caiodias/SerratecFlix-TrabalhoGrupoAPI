@@ -1,11 +1,17 @@
 package com.SerratecFlix.trabalhoApi.Dto.Request;
 
+import com.SerratecFlix.trabalhoApi.Domain.Filme;
+import com.SerratecFlix.trabalhoApi.Domain.ListaFavoritos;
+import com.SerratecFlix.trabalhoApi.Dto.Response.FilmeResponse;
+import com.SerratecFlix.trabalhoApi.Dto.Response.SerieResponseDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
