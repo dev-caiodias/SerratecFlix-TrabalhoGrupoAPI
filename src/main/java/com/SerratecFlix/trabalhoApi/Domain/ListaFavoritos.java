@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -17,18 +18,14 @@ public class ListaFavoritos {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @NotBlank
     @Column(name = "", nullable = false)
     private String favoritos;
 
-
     private boolean privada;
-
 
     @Column
     private LocalDate dataCriacao;
-
 
     @ManyToOne
     @JoinColumn(name = "id_usuario")

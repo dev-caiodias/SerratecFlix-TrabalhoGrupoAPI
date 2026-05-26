@@ -1,5 +1,9 @@
 package com.SerratecFlix.trabalhoApi.Repository;
 
-public class AvaliacaoSerieRepository {
+import com.SerratecFlix.trabalhoApi.Domain.AvaliacaoSerie;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface AvaliacaoSerieRepository extends JpaRepository<AvaliacaoSerie, Long> {
 
 }
