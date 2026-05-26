@@ -1,4 +1,4 @@
-package com.SerratecFlix.trabalhoApi.dto;
+package com.SerratecFlix.trabalhoApi.Dto.Request;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
