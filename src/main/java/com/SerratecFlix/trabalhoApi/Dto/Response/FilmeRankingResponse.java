@@ -12,7 +12,7 @@ public class FilmeRankingResponse {
     private Integer posicao;
 
     @Schema(description = "Dados do filme")
-    private FilmeResponse filme;
+    private FilmeResponseDTO filme;
 
     @Schema(description = "Total de avaliações que o filme recebeu", example = "42")
     private Integer totalAvaliacoes;

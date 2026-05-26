@@ -5,6 +5,7 @@ import com.SerratecFlix.trabalhoApi.Domain.ListaFavoritos;
 import com.SerratecFlix.trabalhoApi.Domain.Serie;
 import com.SerratecFlix.trabalhoApi.Dto.Request.ListaFavoritosDTORequest;
 import com.SerratecFlix.trabalhoApi.Dto.Response.ListaFavoritosDTOResponse;
+import com.SerratecFlix.trabalhoApi.Repository.FilmeRepository;
 import com.SerratecFlix.trabalhoApi.Repository.ListaFavoritosRepository;
 import com.SerratecFlix.trabalhoApi.Repository.SerieRepository;
 import org.springframework.beans.factory.annotation.Autowired;

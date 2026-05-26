@@ -1,6 +1,5 @@
 package com.SerratecFlix.trabalhoApi.Controller;
 
-
 import com.SerratecFlix.trabalhoApi.Dto.Request.ListaFavoritosDTORequest;
 import com.SerratecFlix.trabalhoApi.Dto.Response.ListaFavoritosDTOResponse;
 import com.SerratecFlix.trabalhoApi.Repository.ListaFavoritosRepository;
@@ -23,13 +22,11 @@ public class ListaFavoritosController {
     @Autowired
     private ListaFavoritosService listaFavoritosService;
 
-
     @GetMapping
     @Operation(summary = "Retorna todas as listas")
     public ResponseEntity<List<ListaFavoritosDTOResponse>> listar() {
         return ResponseEntity.ok(listaFavoritosService.listar());
     }
-
 
     @GetMapping("/{id}")
     @Operation(summary = "Retorna a lista do usuario do Id")
@@ -37,37 +34,26 @@ public class ListaFavoritosController {
         return ResponseEntity.ok(listaFavoritosService.buscarPorId(id));
     }
 
-
     @PostMapping
     @Operation(summary = "Cria uma nova lista para o usuario")
-    public ResponseEntity<ListaFavoritosDTOResponse> criar(@Valid @RequestBody ListaFavoritosDTORequest request){
+    public ResponseEntity<ListaFavoritosDTOResponse> criar(@Valid @RequestBody ListaFavoritosDTORequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(listaFavoritosService.criar(request));
     }
-
 
     @PostMapping("/listas/{id}/filmes/{filmeId}")
     @Operation(summary = "Cria uma nova lista para o usuario")
-    public ResponseEntity<ListaFavoritosDTOResponse> criar(@Valid @RequestBody ListaFavoritosDTORequest request){
+    public ResponseEntity<ListaFavoritosDTOResponse> criar(@Valid @RequestBody ListaFavoritosDTORequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(listaFavoritosService.criar(request));
     }
-
 
     @PutMapping
     @Operation(summary = "Editar ou adicionar a lista")
     public
 
-
-
-
-
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Deleta uma lista")
-    public ResponseEntity<Void> deletar(@PathVariable Long id){
+    @DeleteMapping("/{id}") @Operation(summary = "Deleta uma lista") public ResponseEntity<Void> deletar(
+            @PathVariable Long id) {
         listaFavoritosService.deletar(id);
         return ResponseEntity.noContent().build();
     }
-
-
-
 
 }
