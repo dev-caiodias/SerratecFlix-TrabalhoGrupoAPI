@@ -10,6 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import com.SerratecFlix.trabalhoApi.Dto.Response.FilmeRankingResponse;
 
 import java.util.List;
 
@@ -47,7 +51,8 @@ public class FilmeController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar dados de um filme")
-    public ResponseEntity<FilmeResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody FilmeRequestDTO request) {
+    public ResponseEntity<FilmeResponseDTO> atualizar(@PathVariable Long id,
+            @Valid @RequestBody FilmeRequestDTO request) {
         return ResponseEntity.ok(filmeService.atualizar(id, request));
     }
 
@@ -56,5 +61,38 @@ public class FilmeController {
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         filmeService.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/ranking")
+    @Operation(summary = "Obter ranking geral de filmes com paginação")
+    public ResponseEntity<Page<FilmeRankingResponse>> obterRankingGeral(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(filmeService.obterRankingGeral(pageable));
+    }
+
+    @GetMapping("/ranking/categoria/{categoriaId}")
+    @Operation(summary = "Obter ranking de filmes por categoria com paginação")
+    public ResponseEntity<Page<FilmeRankingResponse>> obterRankingPorCategoria(
+            @PathVariable Long categoriaId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(filmeService.obterRankingPorCategoria(categoriaId, pageable));
+    }
+
+    @PostMapping("/{id}/destacar")
+    @Operation(summary = "Destacar o título de um filme")
+    public ResponseEntity<FilmeResponseDTO> destacarFilme(@PathVariable Long id) {
+        return ResponseEntity.ok(filmeService.destacarFilme(id));
+    }
+
+    @DeleteMapping("/{id}/destacar")
+    @Operation(summary = "Remover a marcação de destaque de um filme")
+    public ResponseEntity<FilmeResponseDTO> removerDestaque(@PathVariable Long id) {
+        return ResponseEntity.ok(filmeService.removerDestaque(id));
     }
 }
