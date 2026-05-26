@@ -7,6 +7,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.SerratecFlix.trabalhoApi.Domain.AvaliacaoFilme;
+
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface AvaliacaofilmeRepository extends JpaRepository<AvaliacaoFilme, Long> {
 
