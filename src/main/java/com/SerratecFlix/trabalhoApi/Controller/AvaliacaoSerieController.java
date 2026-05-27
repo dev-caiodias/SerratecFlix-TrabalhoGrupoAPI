@@ -20,8 +20,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Max;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
