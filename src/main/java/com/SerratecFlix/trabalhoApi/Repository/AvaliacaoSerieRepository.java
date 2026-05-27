@@ -1,5 +1,5 @@
 package com.SerratecFlix.trabalhoApi.Repository;
-
+// Calcula a media da avaliacoes da serie e mostra as series com avaliacao acima de um valor >=
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
