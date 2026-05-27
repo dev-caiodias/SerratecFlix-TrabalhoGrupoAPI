@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.SerratecFlix.trabalhoApi.Domain.Filme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,7 @@ public class AvaliacaoFilmeService {
     /*GET para buscar pelo ID da avaliacao */
     public AvaliacaoFilmeDTOResponse buscarPorId(Long id){
         AvaliacaoFilme avaliacao  = avaliacaoFilmeRepository.findById(id)
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Avaliação não encontrada."))
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Avaliação não encontrada."));
         return converterParaResponse(avaliacao);
     }
 

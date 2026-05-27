@@ -25,78 +25,77 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Tag(name = "Avaliação filme",description = "Cadastro de avaliações para filmes." )
+@Tag(name = "Avaliação filme", description = "Cadastro de avaliações para filmes.")
 @RestController
 @RequestMapping("/avaliacoes-filme")
 public class AvaliacaoFilmeController {
 
-    @Autowired
-    private AvaliacaoFilmeService avaliacaoFilmeService;
+	@Autowired
+	private AvaliacaoFilmeService avaliacaoFilmeService;
 
-    @Operation(summary = "Lista de avaliações de filmes", description = "Acessa a lista de avaliações de filmes no sistema")
+	@Operation(summary = "Lista de avaliações de filmes", description = "Acessa a lista de avaliações de filmes no sistema")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200",description = "Lista acessada com sucesso"),
+			@ApiResponse(responseCode = "200", description = "Lista acessada com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Requisição inválida"),
 			@ApiResponse(responseCode = "401", description = "Erro de autenticação"),
 			@ApiResponse(responseCode = "403", description = "Não ha permissão para acessar o recurso"),
 			@ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
 			@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
 	})
-    /*GET listar todos */
-    @GetMapping
-    public ResponseEntity<List<AvaliacaoFilmeDTOResponse>> listarTodas() {
-        List<AvaliacaoFilmeDTOResponse> lista = avaliacaoFilmeService.listarTodos();
-        return ResponseEntity.ok(lista);
-    }
+	/* GET listar todos */
+	@GetMapping
+	public ResponseEntity<List<AvaliacaoFilmeDTOResponse>> listarTodas() {
+		List<AvaliacaoFilmeDTOResponse> lista = avaliacaoFilmeService.listarTodos();
+		return ResponseEntity.ok(lista);
+	}
 
-    @Operation(summary = "Busca de avaliação por id", description = "Realiza a busca de uma avaliação de filme, através do seu ID")
+	@Operation(summary = "Busca de avaliação por id", description = "Realiza a busca de uma avaliação de filme, através do seu ID")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200",description = "Avaliação encontrada com sucesso"),
+			@ApiResponse(responseCode = "200", description = "Avaliação encontrada com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Requisição inválida"),
 			@ApiResponse(responseCode = "401", description = "Erro de autenticação"),
 			@ApiResponse(responseCode = "403", description = "Não ha permissão para acessar o recurso"),
 			@ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
 			@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
 	})
-    /*GET por ID */
-    @GetMapping("/{id}")
-    public ResponseEntity<AvaliacaoFilmeDTOResponse> buscarPorId(@PathVariable Long id) {
-        AvaliacaoFilmeDTOResponse response = avaliacaoFilmeService.buscarPorId(id);
-        return ResponseEntity.ok(response); 
-    }
+	/* GET por ID */
+	@GetMapping("/{id}")
+	public ResponseEntity<AvaliacaoFilmeDTOResponse> buscarPorId(@PathVariable Long id) {
+		AvaliacaoFilmeDTOResponse response = avaliacaoFilmeService.buscarPorId(id);
+		return ResponseEntity.ok(response);
+	}
 
-    @Operation(summary = "Busca de categoria por id do filme", description = "Realiza a busca de uma avaliação, através do ID do filme")
+	@Operation(summary = "Busca de categoria por id do filme", description = "Realiza a busca de uma avaliação, através do ID do filme")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200",description = "Avaliações encontrada com sucesso"),
+			@ApiResponse(responseCode = "200", description = "Avaliações encontrada com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Requisição inválida"),
 			@ApiResponse(responseCode = "401", description = "Erro de autenticação"),
 			@ApiResponse(responseCode = "403", description = "Não ha permissão para acessar o recurso"),
 			@ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
 			@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
 	})
-    /*GEt pelo id do filme */
-    @GetMapping("/filme/{filmeId}")
-    public ResponseEntity<List<AvaliacaoFilmeDTOResponse>> buscarPorFilme(@PathVariable Long filmeId) {
-        List<AvaliacaoFilmeDTOResponse> lista = avaliacaoFilmeService.buscarPorFilme(filmeId);
-        return ResponseEntity.ok(lista);
-    }
-    
+	/* GEt pelo id do filme */
+	@GetMapping("/filme/{filmeId}")
+	public ResponseEntity<List<AvaliacaoFilmeDTOResponse>> buscarPorFilme(@PathVariable Long filmeId) {
+		List<AvaliacaoFilmeDTOResponse> lista = avaliacaoFilmeService.buscarPorFilme(filmeId);
+		return ResponseEntity.ok(lista);
+	}
 
-    @Operation(summary = "Registrar uma avaliação", description = "Inserir uma nova avaliação no sistema")
+	@Operation(summary = "Registrar uma avaliação", description = "Inserir uma nova avaliação no sistema")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200",description = "Avaliação registrada com sucesso"),
+			@ApiResponse(responseCode = "200", description = "Avaliação registrada com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Requisição inválida"),
 			@ApiResponse(responseCode = "401", description = "Erro de autenticação"),
 			@ApiResponse(responseCode = "403", description = "Não ha permissão para acessar o recurso"),
 			@ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
 			@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
 	})
-    /*POST */
-    @PostMapping
-    public ResponseEntity<AvaliacaoFilmeDTOResponse> criar(@Valid @RequestBody AvaliacaoFilmeDTOResquest request) {
-        AvaliacaoFilmeDTOResponse response = avaliacaoFilmeService.criar(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+	/* POST */
+	@PostMapping
+	public ResponseEntity<AvaliacaoFilmeDTOResponse> criar(@Valid @RequestBody AvaliacaoFilmeDTOResquest request) {
+		AvaliacaoFilmeDTOResponse response = avaliacaoFilmeService.criar(request);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+	}
 
 	@Operation(summary = "Atualizar cadastro de uma Avaliação", description = "Atualiza o cadastro de uma avaliação no sistema através do seu ID")
 	@ApiResponses(value = {
@@ -115,18 +114,18 @@ public class AvaliacaoFilmeController {
 
     @Operation(summary = "Deleta uma avaliação", description = "Deleta uma avaliação no sistema")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200",description = "Avaliação excluida com sucesso"),
+			@ApiResponse(responseCode = "200", description = "Avaliação excluida com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Requisição inválida"),
 			@ApiResponse(responseCode = "401", description = "Erro de autenticação"),
 			@ApiResponse(responseCode = "403", description = "Não ha permissão para acessar o recurso"),
 			@ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
 			@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
 	})
-    /*DELETE */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        avaliacaoFilmeService.deletar(id);
-        return ResponseEntity.noContent().build();
-    }
+	/* DELETE */
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deletar(@PathVariable Long id) {
+		avaliacaoFilmeService.deletar(id);
+		return ResponseEntity.noContent().build();
+	}
 
 }

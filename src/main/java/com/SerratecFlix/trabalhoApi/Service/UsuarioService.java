@@ -21,6 +21,9 @@ public class UsuarioService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Autowired
+    private EmailService emailService;
+
     public Usuario toUsuario(UsuarioDTORequest request){
         Usuario usuario = new Usuario();
         usuario.setNome(request.getNome());
@@ -49,7 +52,7 @@ public class UsuarioService {
     }
 
     public UsuarioDTOResponse criar (UsuarioDTORequest request){
-        if(usuarioRepository.existsByUsername(request.getUserName())){
+        if(usuarioRepository.existsByUserName(request.getUserName())){
             throw new ConflictException("Username já está em uso:");
         }
         if(usuarioRepository.existsByEmail(request.getEmail())){
@@ -63,7 +66,10 @@ public class UsuarioService {
                 .senha(passwordEncoder.encode(request.getSenha()))
                 .build();
 
-        return toUsuarioResponse(usuarioRepository.save(usuario));
+        UsuarioDTOResponse response = toUsuarioResponse(usuarioRepository.save(usuario));
+        emailService.enviarBoasVindas(usuario.getEmail(), usuario.getNome());
+
+        return response;
     }
 
     public UsuarioDTOResponse atualizar(Long id, UsuarioDTORequest request){
@@ -88,4 +94,5 @@ public class UsuarioService {
 
         usuarioRepository.deleteById(id);
     }
+
 }

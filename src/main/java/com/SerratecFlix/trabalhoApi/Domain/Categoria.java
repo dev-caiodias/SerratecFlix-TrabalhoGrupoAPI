@@ -47,4 +47,3 @@ public class Categoria {
     private List<Serie> series;
 
 }
-

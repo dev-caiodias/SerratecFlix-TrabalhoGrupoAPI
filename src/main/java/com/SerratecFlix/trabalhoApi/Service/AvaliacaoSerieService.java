@@ -6,14 +6,15 @@ import java.util.List;
 import com.SerratecFlix.trabalhoApi.Domain.AvaliacaoSerie;
 import com.SerratecFlix.trabalhoApi.Repository.AvaliacaoSerieRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AvaliacaoSerieService {
 
-    @Autowired
-    private AvaliacaoSerieRepository repository;
+    private final AvaliacaoSerieRepository repository;
 
     public AvaliacaoSerie salvar(AvaliacaoSerie avaliacao) {
 
@@ -32,5 +33,9 @@ public class AvaliacaoSerieService {
 
     public void deletar(Long id) {
         repository.deleteById(id);
+    }
+
+    public List<AvaliacaoSerie> buscarPorNotaMinima(Double nota) {
+        return repository.findByNotaGreaterThanEqual(nota);
     }
 }

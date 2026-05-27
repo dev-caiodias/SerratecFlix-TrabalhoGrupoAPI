@@ -1,11 +1,11 @@
-package com.SerratecFlix.trabalhoApi.dto;
+package com.SerratecFlix.trabalhoApi.Dto.Request;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class AvaliacaoSerieRequestDTO {
+public class AvaliacaoSerieRequestDto {
 
     @NotNull
     @Min(0)

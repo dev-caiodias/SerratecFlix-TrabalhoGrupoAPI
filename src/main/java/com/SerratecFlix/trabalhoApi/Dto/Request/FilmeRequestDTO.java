@@ -10,7 +10,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
-public class FilmeRequest {
+public class FilmeRequestDTO {
     @Schema(description = "Título do filme", example = "O Senhor dos Anéis: A Sociedade do Anel")
     @NotBlank(message = "O título é obrigatório")
     private String titulo;

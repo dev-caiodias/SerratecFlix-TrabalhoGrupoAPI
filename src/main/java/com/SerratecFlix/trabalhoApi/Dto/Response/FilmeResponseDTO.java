@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FilmeResponse {
+public class FilmeResponseDTO {
     @Schema(description = "ID do filme", example = "1")
     private Long id;
 
