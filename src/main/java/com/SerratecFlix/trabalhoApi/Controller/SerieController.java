@@ -37,7 +37,7 @@ public class SerieController {
     
     @GetMapping("/{id}/media")
     public Double obterMedia(@PathVariable Long id) {
-        return service.obterMedia(id);
+        return serieService.obterMedia(id);
     }
 
     @PostMapping
