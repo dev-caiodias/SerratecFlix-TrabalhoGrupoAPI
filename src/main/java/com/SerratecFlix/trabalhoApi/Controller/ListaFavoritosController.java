@@ -92,11 +92,31 @@ public class ListaFavoritosController {
 
 
     @PostMapping("/{id}/series/{serieId}")
-    @Operation(summary = "Adiciona series na lista")
+    @Operation(summary = "Adiciona series na lista", description = "Adiciona series na lista")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Serie adicionada")
     })
     public ResponseEntity<ListaFavoritos> adicionaSerie(@PathVariable Long id, @PathVariable Long serieId){
         return ResponseEntity.ok(listaFavoritosService.adicionaSerie(id, serieId));
+    }
+
+
+    @PostMapping("/{id}/compartilhar")
+    @Operation(summary = "Tornar lista pública", description = "Deixe sua lista publica")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Sua lista agora é publica")
+    })
+    public ResponseEntity<ListaFavoritosDTOResponse> compartilhar(@PathVariable Long id){
+        return ResponseEntity.ok(listaFavoritosService.compartilhar(id));
+    }
+
+
+    @DeleteMapping("/{id}/compartilhar")
+    @Operation(summary = "Privar lista", description = "Deixe sua lista privada")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Sua lista agora é privada")
+    })
+    public ResponseEntity<ListaFavoritosDTOResponse> descompartilhar(@PathVariable Long id) {
+        return ResponseEntity.ok(listaFavoritosService.descompartilhar(id));
     }
 }
