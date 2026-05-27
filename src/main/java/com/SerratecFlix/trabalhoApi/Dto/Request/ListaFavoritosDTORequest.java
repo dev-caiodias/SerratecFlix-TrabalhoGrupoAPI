@@ -2,7 +2,8 @@ package com.SerratecFlix.trabalhoApi.Dto.Request;
 
 import com.SerratecFlix.trabalhoApi.Domain.Filme;
 import com.SerratecFlix.trabalhoApi.Domain.ListaFavoritos;
-import com.SerratecFlix.trabalhoApi.Dto.Response.FilmeResponse;
+import com.SerratecFlix.trabalhoApi.Domain.Serie;
+import com.SerratecFlix.trabalhoApi.Dto.Response.FilmeResponseDTO;
 import com.SerratecFlix.trabalhoApi.Dto.Response.SerieResponseDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -27,4 +28,7 @@ public class ListaFavoritosDTORequest {
 
     @NotNull
     private Long usuarioId;
+
+    private List<Serie> serie;
+    private List<Filme> filme;
 }

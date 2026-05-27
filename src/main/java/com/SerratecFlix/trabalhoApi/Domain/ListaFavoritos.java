@@ -7,11 +7,12 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "favoritos")
+@Table(name = "lista-favoritos")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,11 +27,12 @@ public class ListaFavoritos {
     @Column(name = "", nullable = false)
     private String favoritos;
 
+    @Column(nullable = false)
     private boolean privada;
 
     @Column(name = "dataCriacao", nullable = false, updatable = false)
     @CreationTimestamp
-    private LocalDate dataCriacao;
+    private LocalDateTime dataCriacao;
 
     @ManyToOne
     @JoinColumn(name = "id_usuario")

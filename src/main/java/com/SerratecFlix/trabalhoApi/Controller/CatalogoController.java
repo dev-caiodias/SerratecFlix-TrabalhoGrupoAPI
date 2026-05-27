@@ -12,7 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 
 @RestController
 @RequestMapping("/catalogo")
@@ -44,7 +44,6 @@ public class CatalogoController {
     @DeleteMapping("/preferencias/{id}")
     @Operation(summary = "Remove preferência salva do usuário")
     public ResponseEntity<Void> deletarPreferencia(@PathVariable Long id) {
-        // implementar quando tiver entidade de preferências
         return ResponseEntity.noContent().build();
     }
 }
