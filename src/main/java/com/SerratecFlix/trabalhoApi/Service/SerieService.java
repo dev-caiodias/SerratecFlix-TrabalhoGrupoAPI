@@ -21,11 +21,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor 
 public class SerieService {
-    
+  
     private final SerieRepository serieRepository;
     private final CategoriaRepository categoriaRepository;
     private final AvaliacaoSerieRepository avaliacaoSerieRepository;
-    private final TmdbService tmdbService;
 
     @Transactional(readOnly = true)
     public List<SerieResponseDTO> listarTodas() {
@@ -101,7 +100,7 @@ public class SerieService {
         Serie serie = serieRepository.findById(serieId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Série não localizada para recalcular média."));
         
-        Double mediaCalculada = avaliacaoSerieRepository.calcularMediaPorSerieId(serieId);
+        Double mediaCalculada = avaliacaoSerieRepository.calcularMediaPorSerie(serieId);
       
         serie.setNotaMedia(mediaCalculada != null ? mediaCalculada : 0.0);
         serieRepository.save(serie);
@@ -153,7 +152,7 @@ public class SerieService {
     
     @Transactional(readOnly = true)
     public Double obterMedia(Long idSerie) {
-        Double media = avaliacaoSerieRepository.calcularMediaPorSerieId(idSerie);
+        Double media = avaliacaoSerieRepository.calcularMediaPorSerie(idSerie);
         return media != null ? media : 0.0;
     }
 }
