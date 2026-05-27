@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//@RestController
-@RequestMapping("/lista-favoritos")
+@RestController
+@RequestMapping("/listas")
 public class ListaFavoritosController {
 
     @Autowired
@@ -51,9 +51,9 @@ public class ListaFavoritosController {
 
     @PutMapping("/lista/{id}")
     @Operation(summary = "Editar ou adicionar na lista")
-    public ResponseEntity<ListaFavoritos>atualizar(@PathVariable Long id, @RequestBody @Valid
-                                                   ListaFavoritosDTORequest request){
-        return ResponseEntity.ok(listaFavoritosService.atualizar(id, request));
+    public ResponseEntity<ListaFavoritosDTOResponse>atualizar(@PathVariable Long id, @RequestBody @Valid
+                                                ListaFavoritosDTORequest request){
+        return ResponseEntity.ok(listaFavoritosService.atualizar(request, id));
     }
 
 
