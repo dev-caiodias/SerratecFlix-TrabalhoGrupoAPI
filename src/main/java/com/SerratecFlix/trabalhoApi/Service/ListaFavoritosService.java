@@ -104,6 +104,25 @@ public class ListaFavoritosService {
     }
 
 
+    private ListaFavoritos buscarLista(Long id){
+        return listaFavoritosRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Lista não encontrada"));
+    }
+
+
+    public ListaFavoritosDTOResponse compartilhar(Long id){
+        ListaFavoritos listaFavoritos = buscarLista(id);
+        listaFavoritos.setPrivada(false);
+        return toResponse(listaFavoritosRepository.save(listaFavoritos));
+    }
+
+
+    public ListaFavoritosDTOResponse descompartilhar(Long id){
+        ListaFavoritos listaFavoritos = buscarLista(id);
+        listaFavoritos.setPrivada(true);
+        return toResponse(listaFavoritosRepository.save(listaFavoritos));
+    }
+
 
     public void deletar(Long id) {
         if (!listaFavoritosRepository.existsById(id)) {
