@@ -9,33 +9,23 @@ import com.SerratecFlix.trabalhoApi.Dto.SerieStatsResponse;
 import com.SerratecFlix.trabalhoApi.Repository.SerieRepository;
 import com.SerratecFlix.trabalhoApi.Repository.CategoriaRepository;
 import com.SerratecFlix.trabalhoApi.Domain.AvaliacaoSerie;
-import org.springframework.beans.factory.annotation.Autowired; // Adicionado import correto
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor 
 public class SerieService {
     
     private final SerieRepository serieRepository;
     private final CategoriaRepository categoriaRepository;
     private final AvaliacaoSerieRepository avaliacaoSerieRepository;
-    private final TmdbService tmdbService; // Padronizado para caixa baixa
-
-    @Autowired // Único construtor responsável por injetar todas as dependências de forma limpa
-    public SerieService(SerieRepository serieRepository, 
-                        CategoriaRepository categoriaRepository, 
-                        AvaliacaoSerieRepository avaliacaoSerieRepository,
-                        TmdbService tmdbService) {
-        this.serieRepository = serieRepository;
-        this.categoriaRepository = categoriaRepository;
-        this.avaliacaoSerieRepository = avaliacaoSerieRepository;
-        this.tmdbService = tmdbService;
-    }
+    private final TmdbService tmdbService;
 
     @Transactional(readOnly = true)
     public List<SerieResponseDTO> listarTodas() {
@@ -161,7 +151,6 @@ public class SerieService {
                 .build();
     }
     
-    // Método consertado e sincronizado com o SerieController!
     @Transactional(readOnly = true)
     public Double obterMedia(Long idSerie) {
         Double media = avaliacaoSerieRepository.calcularMediaPorSerieId(idSerie);
