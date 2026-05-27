@@ -7,6 +7,7 @@ import com.SerratecFlix.trabalhoApi.Exception.ConflictException;
 import com.SerratecFlix.trabalhoApi.Exception.ResourceNotFoundException;
 import com.SerratecFlix.trabalhoApi.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,12 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private EmailService emailService;
 
     public Usuario toUsuario(UsuarioDTORequest request){
         Usuario usuario = new Usuario();
@@ -59,7 +66,10 @@ public class UsuarioService {
                 .senha(passwordEncoder.encode(request.getSenha()))
                 .build();
 
-        return toUsuarioResponse(usuarioRepository.save(usuario));
+        UsuarioDTOResponse response = toUsuarioResponse(usuarioRepository.save(usuario));
+        emailService.enviarBoasVindas(usuario.getEmail(), usuario.getNome());
+
+        return response;
     }
 
     public UsuarioDTOResponse atualizar(Long id, UsuarioDTORequest request){
@@ -71,7 +81,7 @@ public class UsuarioService {
         usuario.setUserName(request.getUserName());
 
         if (request.getSenha() != null && !request.getSenha().isBlank()){
-            usuario.setSenha(passwordEncoder.encode(request.getSenha());
+            usuario.setSenha(passwordEncoder.encode(request.getSenha()));
         }
 
         return toUsuarioResponse(usuarioRepository.save(usuario));
