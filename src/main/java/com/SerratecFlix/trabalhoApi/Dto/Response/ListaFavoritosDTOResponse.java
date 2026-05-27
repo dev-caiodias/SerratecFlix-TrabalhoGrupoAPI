@@ -1,22 +1,26 @@
 package com.SerratecFlix.trabalhoApi.Dto.Response;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class ListaFavoritosDTOResponse{
 
-public record ListaFavoritosDTOResponse(
 
 
-     Long id,
-     String favoritos,
-     LocalDateTime dataCriacao,
-     String nomeUsuario,
-     List<FilmeResponse> filme,
-     List<SerieResponseDTO> serie
-){}
+     private Long id;
+     private String favoritos;
+     private LocalDateTime dataCriacao;
+     private String nomeUsuario;
+     private List<FilmeResponseDTO> filme;
+     private List<SerieResponseDTO> serie;
+
+}
 
 
 
