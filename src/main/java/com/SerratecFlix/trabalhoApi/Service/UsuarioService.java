@@ -3,6 +3,8 @@ package com.SerratecFlix.trabalhoApi.Service;
 import com.SerratecFlix.trabalhoApi.Domain.Usuario;
 import com.SerratecFlix.trabalhoApi.Dto.Request.UsuarioDTORequest;
 import com.SerratecFlix.trabalhoApi.Dto.Response.UsuarioDTOResponse;
+import com.SerratecFlix.trabalhoApi.Exception.ConflictException;
+import com.SerratecFlix.trabalhoApi.Exception.ResourceNotFoundException;
 import com.SerratecFlix.trabalhoApi.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,12 +40,12 @@ public class UsuarioService {
 
     public UsuarioDTOResponse buscarPorId(Long id){
         Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new ResorceNotFoundException("Usuario não foi encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario não foi encontrado"));
         return toUsuarioResponse(usuario);
     }
 
     public UsuarioDTOResponse criar (UsuarioDTORequest request){
-        if(usuarioRepository.existsByUsername(request.getUserName())){
+        if(usuarioRepository.existsByUserName(request.getUserName())){
             throw new ConflictException("Username já está em uso:");
         }
         if(usuarioRepository.existsByEmail(request.getEmail())){
@@ -62,7 +64,7 @@ public class UsuarioService {
 
     public UsuarioDTOResponse atualizar(Long id, UsuarioDTORequest request){
         Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new ResorceNotFoundException("Usuario não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario não encontrado."));
 
         usuario.setNome(request.getNome());
         usuario.setEmail(request.getEmail());
