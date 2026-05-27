@@ -1,5 +1,11 @@
 package com.SerratecFlix.trabalhoApi.Dto.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.*;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 
 @Schema(description = "Modelo de dados para apresentação de informações de categoria ao usuario.")
 public class CategoriaDTOResponse {
@@ -12,40 +18,5 @@ public class CategoriaDTOResponse {
 
     @Schema(description = "Descrição da categoria", example = "Histórias leves e bem-humoradas feitas para fazer rir")
     private String descricao;
-
-    public CategoriaDTOResponse() {
-    }
-
-    public CategoriaDTOResponse(Long id, String nome, String descricao) {
-        this.id = id;
-        this.nome = nome;
-        this.descricao = descricao;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    
 
 }

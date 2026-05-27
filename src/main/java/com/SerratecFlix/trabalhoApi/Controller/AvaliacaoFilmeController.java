@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = "Avaliação filme", description = "Cadastro de avaliações para filmes.")
@@ -96,7 +97,22 @@ public class AvaliacaoFilmeController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
-	@Operation(summary = "Deleta uma avaliação", description = "Deleta uma avaliação no sistema")
+	@Operation(summary = "Atualizar cadastro de uma Avaliação", description = "Atualiza o cadastro de uma avaliação no sistema através do seu ID")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200",description = "Avaliação atualizada com sucesso"),
+			@ApiResponse(responseCode = "400", description = "Requisição inválida"),
+			@ApiResponse(responseCode = "401", description = "Erro de autenticação"),
+			@ApiResponse(responseCode = "403", description = "Não ha permissão para acessar o recurso"),
+			@ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+			@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+	})
+	@PutMapping("/{id}")
+	public ResponseEntity<AvaliacaoFilmeDTOResponse> atualizar(@Valid @PathVariable Long id,@RequestBody AvaliacaoFilmeDTOResquest request) {
+		AvaliacaoFilmeDTOResponse response = avaliacaoFilmeService.atualizar(id, request);
+		return ResponseEntity.ok(response);
+	}
+
+    @Operation(summary = "Deleta uma avaliação", description = "Deleta uma avaliação no sistema")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Avaliação excluida com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Requisição inválida"),
