@@ -13,7 +13,6 @@ import java.util.Optional;
 @Repository
 public interface AvaliacaofilmeRepository extends JpaRepository<AvaliacaoFilme, Long> {
 
-
     List<AvaliacaoFilme> findByFilmeId(Long filmeId);
 
     List<AvaliacaoFilme> findByUsuarioId(Long usuarioId);
