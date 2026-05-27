@@ -34,6 +34,9 @@ public class Serie {
     @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<AvaliacaoSerie> avaliacoes;
+    
+    @ManyToMany
+    private List<Categoria> categorias; 
 
     public Serie() {
     }
@@ -111,5 +114,13 @@ public class Serie {
 
     public void setAvaliacoes(List<AvaliacaoSerie> avaliacoes) {
         this.avaliacoes = avaliacoes;
+    }
+    
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<Categoria> categorias) {
+        this.categorias = categorias;
     }
 }

@@ -1,5 +1,6 @@
 package com.SerratecFlix.trabalhoApi.Service;
 
+import com.SerratecFlix.trabalhoApi.Repository.AvaliacaoSerieRepository;
 import com.SerratecFlix.trabalhoApi.Domain.Serie;
 import com.SerratecFlix.trabalhoApi.Dto.Request.SerieRequestDTO;
 import com.SerratecFlix.trabalhoApi.Dto.Response.SerieResponseDTO;
@@ -11,8 +12,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class SerieService {
+	
+	@Autowired
+	private AvaliacaoSerieRepository avaliacaoRepository;
 
-    @Autowired
+    @
+    Autowired
     private SerieRepository repository;
 
     public List<SerieResponseDTO> listarTodas() {
@@ -61,5 +66,9 @@ public class SerieService {
         entidade.setTemporadas(dto.getTemporadas());
         entidade.setEpisodios(dto.getEpisodios());
         entidade.setDataLancamento(dto.getDataLancamento());
+    }
+    
+    public Double obterMedia(Long idSerie) {
+        return avaliacaoRepository.calcularMedia(idSerie);
     }
 }

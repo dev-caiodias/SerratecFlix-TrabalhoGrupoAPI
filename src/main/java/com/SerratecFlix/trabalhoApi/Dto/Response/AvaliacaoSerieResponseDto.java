@@ -1,8 +1,8 @@
-package com.SerratecFlix.trabalhoApi.dto;
+package com.SerratecFlix.trabalhoApi.Dto.Response;
 
 import java.time.LocalDate;
 
-public class AvaliacaoSerieResponseDTO {
+public class AvaliacaoSerieResponseDto {
 
     private Long id;
     private Double nota;
