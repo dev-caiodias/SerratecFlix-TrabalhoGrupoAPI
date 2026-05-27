@@ -12,6 +12,7 @@ import com.SerratecFlix.trabalhoApi.Repository.FilmeRepository;
 import com.SerratecFlix.trabalhoApi.Repository.ListaFavoritosRepository;
 import com.SerratecFlix.trabalhoApi.Repository.SerieRepository;
 import com.SerratecFlix.trabalhoApi.Repository.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
