@@ -40,7 +40,7 @@ public class AvaliacaoSerie {
     @Schema(description = "Comentário da avaliação.", example = "Ótima série!")
     private String comentario;
 
-    @Schema(description = "Data em que a avaliação foi realizada.", example = "2023-06-15")
+    @Schema(description = "Data em que a avaliação foi realizada.", example = "2023-06-15")c
     private LocalDate dataAvaliacao;
 
     @ManyToOne
