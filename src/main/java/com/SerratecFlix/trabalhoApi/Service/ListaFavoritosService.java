@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ListaFavoritosService {
@@ -41,7 +43,7 @@ public class ListaFavoritosService {
     public ListaFavoritosDTOResponse buscarPorId(Long id) {
         ListaFavoritos listaFavoritos = listaFavoritosRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario não encontrado"));
-        return new ListaFavoritos(listaFavoritos);
+        return toResponse(listaFavoritos);
     }
 
 
@@ -111,10 +113,6 @@ public class ListaFavoritosService {
     }
 
     private ListaFavoritosDTOResponse toResponse(ListaFavoritos listaFavoritos) {
-
-//        List<FilmeResponseDTO> filmes = listaFavoritos.getFilme();
-//        List<SerieResponseDTO> series = listaFavoritos.getSerie();
-
 
         return ListaFavoritosDTOResponse.builder()
                 .id(listaFavoritos.getId())
