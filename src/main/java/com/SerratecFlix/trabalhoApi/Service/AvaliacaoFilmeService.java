@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.SerratecFlix.trabalhoApi.Domain.AvaliacaoFilme;
-import com.SerratecFlix.trabalhoApi.Domain.Filme;
 import com.SerratecFlix.trabalhoApi.Domain.Usuario;
 import com.SerratecFlix.trabalhoApi.Dto.Request.AvaliacaoFilmeDTOResquest;
 import com.SerratecFlix.trabalhoApi.Dto.Response.AvaliacaoFilmeDTOResponse;
 import com.SerratecFlix.trabalhoApi.Repository.AvaliacaoFilmeRepository;
+import com.SerratecFlix.trabalhoApi.Repository.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -29,7 +29,7 @@ public class AvaliacaoFilmeService {
     private FilmeService filmeService;
 
     @Autowired
-    private UsuarioService usuarioService;
+    private UsuarioRepository usuarioRepository;
 
     /*Get para listar todas as avaliações de filmes */
     public List<AvaliacaoFilmeDTOResponse> listarTodos() {
@@ -58,8 +58,10 @@ public class AvaliacaoFilmeService {
     @Transactional
     public AvaliacaoFilmeDTOResponse criar(AvaliacaoFilmeDTOResquest request) {
         /* Verifica se já existe o devido usuario e filme*/
-        Filme filme = filmeService.buscarDomainPorId(request.getFilmeId());
-        Usuario usuario = usuarioService.buscarDomainPorId(request.getUsuarioId());
+        Filme filme = filmeService.findByFilmeId(request.getFilmeId());
+        
+        Usuario usuario = usuarioRepository.findById(request.getUsuarioId())
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado."));
 
         AvaliacaoFilme avaliacaoFilme = new AvaliacaoFilme();
         avaliacaoFilme.setNota(request.getNota());
@@ -84,8 +86,10 @@ public class AvaliacaoFilmeService {
         /*Atualização caso mude os dados do filme, precisamos recalcular */
         Long antigoFilmeId = avaliacaoFilme.getFilme().getId();
 
-        Filme novoFilme = filmeService.buscarDomainPorId(request.getFilmeId());
-        Usuario usuario = usuarioService.buscarDomainPorId(request.getUsuarioId());
+        Filme novoFilme = filmeService.findByFilmeId(request.getFilmeId());
+        Usuario usuario = usuarioRepository.findById(request.getUsuarioId())
+                            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado."));
+
 
         avaliacaoFilme.setNota(request.getNota());
         avaliacaoFilme.setComentario(request.getComentario());
