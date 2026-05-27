@@ -38,7 +38,11 @@ public class Serie {
     private Double notaMedia = 0.0;
 
     @ManyToMany
-    @JoinTable(name = "serie_categoria", joinColumns = @JoinColumn(name = "serie_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
+    @JoinTable(
+        name = "serie_categoria", 
+        joinColumns = @JoinColumn(name = "serie_id"), 
+        inverseJoinColumns = @JoinColumn(name = "categoria_id")
+    )
     private List<Categoria> categorias;
 
     @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
