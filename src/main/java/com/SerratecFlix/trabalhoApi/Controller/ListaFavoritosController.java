@@ -42,12 +42,6 @@ public class ListaFavoritosController {
         return ResponseEntity.status(HttpStatus.CREATED).body(listaFavoritosService.criar(request));
     }
 
-    @PostMapping("/listas/{id}/filmes/{filmeId}")
-    @Operation(summary = "Adiciona filmes na lista")
-    public ResponseEntity<ListaFavoritos> adicionaFilme(@PathVariable Long id, @PathVariable Long filmeId){
-        return ResponseEntity.ok(listaFavoritosService.adicionaFilme(id, filmeId));
-    }
-
 
     @PutMapping("/lista/{id}")
     @Operation(summary = "Editar ou adicionar na lista")
@@ -63,4 +57,17 @@ public class ListaFavoritosController {
         return ResponseEntity.noContent().build();
     }
 
+
+    @PostMapping("/{id}/filmes/{filmeId}")
+    @Operation(summary = "Adiciona filmes na lista")
+    public ResponseEntity<ListaFavoritos> adicionaFilme(@PathVariable Long id, @PathVariable Long filmeId){
+        return ResponseEntity.ok(listaFavoritosService.adicionaFilme(id, filmeId));
+    }
+
+
+    @PostMapping("/{id}/series/{serieId}")
+    @Operation(summary = "Adiciona series na lista")
+    public ResponseEntity<ListaFavoritos> adicionaSerie(@PathVariable Long id, @PathVariable Long serieId){
+        return ResponseEntity.ok(listaFavoritosService.adicionaSerie(id, serieId));
+    }
 }

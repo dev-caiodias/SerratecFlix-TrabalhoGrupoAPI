@@ -1,9 +1,11 @@
 package com.SerratecFlix.trabalhoApi.Dto.Response;
 
+import com.SerratecFlix.trabalhoApi.Domain.ListaFavoritos;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
