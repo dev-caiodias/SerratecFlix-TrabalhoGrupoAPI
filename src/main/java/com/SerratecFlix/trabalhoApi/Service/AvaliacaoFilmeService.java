@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.SerratecFlix.trabalhoApi.Domain.AvaliacaoFilme;
+import com.SerratecFlix.trabalhoApi.Domain.Filme;
 import com.SerratecFlix.trabalhoApi.Domain.Usuario;
 import com.SerratecFlix.trabalhoApi.Dto.Request.AvaliacaoFilmeDTOResquest;
 import com.SerratecFlix.trabalhoApi.Dto.Response.AvaliacaoFilmeDTOResponse;
-import com.SerratecFlix.trabalhoApi.Repository.AvaliacaofilmeRepository;
+import com.SerratecFlix.trabalhoApi.Repository.AvaliacaoFilmeRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -21,7 +22,7 @@ import jakarta.transaction.Transactional;
 public class AvaliacaoFilmeService {
 
     @Autowired
-    private AvaliacaofilmeRepository avaliacaoFilmeRepository;
+    private AvaliacaoFilmeRepository avaliacaoFilmeRepository;
 
     @Autowired
     private FilmeService filmeService;
@@ -62,7 +63,7 @@ public class AvaliacaoFilmeService {
         AvaliacaoFilme avaliacaoFilme = new AvaliacaoFilme();
         avaliacaoFilme.setNota(request.getNota());
         avaliacaoFilme.setComentario(request.getComentario());
-        avaliacaoFilme.setDataAvaliação(LocalDateTime.now());
+        avaliacaoFilme.setDataAvaliacao(LocalDateTime.now());
         avaliacaoFilme.setFilme(filme);
         avaliacaoFilme.setUsuario(usuario);
 
@@ -87,7 +88,7 @@ public class AvaliacaoFilmeService {
 
         avaliacaoFilme.setNota(request.getNota());
         avaliacaoFilme.setComentario(request.getComentario());
-        avaliacaoFilme.setFilme(novoFilme.);
+        avaliacaoFilme.setFilme(novoFilme);
         avaliacaoFilme.setUsuario(usuario);
 
         avaliacaoFilme = avaliacaoFilmeRepository.save(avaliacaoFilme);
@@ -122,7 +123,7 @@ public class AvaliacaoFilmeService {
         response.setId(avaliacao.getId());
         response.setNota(avaliacao.getNota());
         response.setComentario(avaliacao.getComentario());
-        response.setDataAvaliacao(avaliacao.getDataAvaliação());
+        response.setDataAvaliacao(avaliacao.getDataAvaliacao());
         
         /* Evita NullPointerException se o relacionamento estiver nulo*/
         if (avaliacao.getUsuario() != null) {
