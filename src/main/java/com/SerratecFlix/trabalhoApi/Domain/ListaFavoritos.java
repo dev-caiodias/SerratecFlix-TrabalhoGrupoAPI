@@ -3,11 +3,19 @@ package com.SerratecFlix.trabalhoApi.Domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "favoritos")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ListaFavoritos {
 
     @Id
@@ -15,12 +23,13 @@ public class ListaFavoritos {
     private Long id;
 
     @NotBlank
-    @Column(nullable = false)
-    private String nomeLista;
+    @Column(name = "", nullable = false)
+    private String favoritos;
 
     private boolean privada;
 
-    @Column
+    @Column(name = "dataCriacao", nullable = false, updatable = false)
+    @CreationTimestamp
     private LocalDate dataCriacao;
 
     @ManyToOne
@@ -28,78 +37,27 @@ public class ListaFavoritos {
     @JsonBackReference
     private Usuario usuario;
 
-    @ManyToMany
-    @JoinTable(
-        name = "lista_filme",
-        joinColumns = @JoinColumn(name = "lista_id"),
-        inverseJoinColumns = @JoinColumn(name = "filme_id")
-    )
-    private List<Filme> filmes;
 
     @ManyToMany
-    @JoinTable(
-        name = "lista_serie",
-        joinColumns = @JoinColumn(name = "lista_id"),
-        inverseJoinColumns = @JoinColumn(name = "serie_id")
-    )
-    private List<Serie> series;
+    @JoinTable(name = "lista_filme", joinColumns = @JoinColumn(name = "lista_id"),
+    inverseJoinColumns = @JoinColumn(name = "filme_id"))
+    private List<Filme> filme = new ArrayList<>();
 
-    public ListaFavoritos() {
+
+    @ManyToMany
+    @JoinTable(name = "lista_serie", joinColumns = @JoinColumn(name = "lista_id"),
+    inverseJoinColumns = @JoinColumn(name = "serie_id"))
+    private List<Serie> serie = new ArrayList<>();
+
+
+    public void adicionaFilme(Filme filme){
+        this.filme.add(filme);
     }
 
-    public Long getId() {
-        return id;
+    public void adicionaSerie(Serie serie){
+        this.serie.add(serie);
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public String getNomeLista() {
-        return nomeLista;
-    }
 
-    public void setNomeLista(String nomeLista) {
-        this.nomeLista = nomeLista;
-    }
-
-    public boolean isPrivada() {
-        return privada;
-    }
-
-    public void setPrivada(boolean privada) {
-        this.privada = privada;
-    }
-
-    public LocalDate getDataCriacao() {
-        return dataCriacao;
-    }
-
-    public void setDataCriacao(LocalDate dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public List<Filme> getFilmes() {
-        return filmes;
-    }
-
-    public void setFilmes(List<Filme> filmes) {
-        this.filmes = filmes;
-    }
-
-    public List<Serie> getSeries() {
-        return series;
-    }
-
-    public void setSeries(List<Serie> series) {
-        this.series = series;
-    }
 }

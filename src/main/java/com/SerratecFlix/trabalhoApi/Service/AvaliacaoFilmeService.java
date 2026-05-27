@@ -40,7 +40,7 @@ public class AvaliacaoFilmeService {
     /*GET para buscar pelo ID da avaliacao */
     public AvaliacaoFilmeDTOResponse buscarPorId(Long id){
         AvaliacaoFilme avaliacao  = avaliacaoFilmeRepository.findById(id)
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Avaliação não encontrada."))
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Avaliação não encontrada."));
         return converterParaResponse(avaliacao);
     }
 

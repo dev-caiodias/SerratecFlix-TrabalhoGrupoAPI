@@ -4,7 +4,13 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "tb_serie")
 public class Serie {
@@ -16,7 +22,7 @@ public class Serie {
     @Column(nullable = false)
     private String titulo;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String descricao;
 
     @Column(nullable = false)
@@ -25,11 +31,15 @@ public class Serie {
     @Column(nullable = false)
     private Integer episodios;
 
-    @Column(name = "data_lancamento")
+    @Column(name = "data_lancamento", nullable = false)
     private LocalDate dataLancamento;
 
     @Column(name = "nota_media")
     private Double notaMedia = 0.0;
+
+    @ManyToMany
+    @JoinTable(name = "serie_categoria", joinColumns = @JoinColumn(name = "serie_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
+    private List<Categoria> categorias;
 
     @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -38,6 +48,7 @@ public class Serie {
     @ManyToMany
     private List<Categoria> categorias; 
 
+<<<<<<< HEAD
     public Serie() {
     }
 
@@ -123,4 +134,9 @@ public class Serie {
     public void setCategorias(List<Categoria> categorias) {
         this.categorias = categorias;
     }
+=======
+    @ManyToMany(mappedBy = "series")
+    @JsonIgnore
+    private List<ListaFavoritos> listasFavoritos;
+>>>>>>> c36d67ed2cc94d266fa452d969a8187058c3785b
 }

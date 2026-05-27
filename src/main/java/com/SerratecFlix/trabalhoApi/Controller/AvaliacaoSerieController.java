@@ -95,7 +95,7 @@ public class AvaliacaoSerieController {
         @ApiResponse(responseCode = "400", description = "Nota está fora do intervalo permitido (0-10)")
     })
     public ResponseEntity<List<AvaliacaoSerie>> listarAvaliacoesAcimaDe(
-            @PathVariable @Min(0) @Max(10) Double notaMinima) {
+            @PathVariable Double notaMinima) {
 
         List<AvaliacaoSerie> avaliacoes = service.buscarPorNotaMinima(notaMinima);
         if (avaliacoes.isEmpty()) {
