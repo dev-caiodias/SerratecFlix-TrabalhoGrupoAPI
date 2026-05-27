@@ -9,7 +9,9 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "usuario")
@@ -57,4 +59,10 @@ public class Usuario {
     @JsonManagedReference
     private List<ListaFavoritos> listaFavoritos;
 
+    @ManyToMany
+    @JoinTable(name = "usuario_categoria_preferida",
+                joinColumns = @JoinColumn(name = "usuario_id"),
+                inverseJoinColumns = @JoinColumn(name = "categoria_id")
+    )
+    private Set<Categoria> preferencias = new HashSet<>();
 }

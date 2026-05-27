@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.SerratecFlix.trabalhoApi.Domain.Categoria;
 import com.SerratecFlix.trabalhoApi.Dto.Request.CategoriaDTORequest;
 import com.SerratecFlix.trabalhoApi.Dto.Response.CategoriaDTOResponse;
+import com.SerratecFlix.trabalhoApi.Exception.ConflictException;
 import com.SerratecFlix.trabalhoApi.Repository.CategoriaRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -44,7 +45,7 @@ public class CategoriaService {
     public CategoriaDTOResponse criar(CategoriaDTORequest dto) {
         /*Validação contra duplicações*/
         categoriaRepository.findByNome(dto.getNome()).ifPresent(c -> {
-            throw new IllegalStateException("Conflito: Categoria com este nome já existe.");
+            throw new ConflictException("Conflito: Categoria com este nome já existe.");
         });
 
         Categoria categoria = new Categoria();

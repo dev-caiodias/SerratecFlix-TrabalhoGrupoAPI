@@ -79,7 +79,7 @@ public class CategoriaController {
 
 	@Operation(summary = "Atualizar cadastro de uma categoria", description = "Atualiza o cadastro de uma categoria no sistema através do seu ID")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Aluno atualizado com sucesso"),
+			@ApiResponse(responseCode = "200",description = "Categoria atualizado com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Requisição inválida"),
 			@ApiResponse(responseCode = "401", description = "Erro de autenticação"),
 			@ApiResponse(responseCode = "403", description = "Não ha permissão para acessar o recurso"),
