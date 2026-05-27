@@ -2,9 +2,11 @@ package com.SerratecFlix.trabalhoApi.Controller;
 
 import java.util.List;
 
-import com.SerratecFlix.trabalhoApi.Domain.AvaliacaoSerie;
+import com.SerratecFlix.trabalhoApi.Dto.Request.AvaliacaoSerieRequestDto;
+import com.SerratecFlix.trabalhoApi.Dto.Response.AvaliacaoSerieResponseDto;
 import com.SerratecFlix.trabalhoApi.Service.AvaliacaoSerieService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,102 +35,100 @@ public class AvaliacaoSerieController {
     private final AvaliacaoSerieService service;
 
     @PostMapping
-    @Operation(
-        summary = "Cria uma nova avaliação de série",
-        description = "Salva uma nova avaliação de série no sistema."
-    )
+    @Operation(summary = "Cria uma nova avaliação de série")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Avaliação criada com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos no corpo da requisição")
+        @ApiResponse(responseCode = "400", description = "Dados inválidos")
     })
-    public ResponseEntity<AvaliacaoSerie> salvar(
-            @RequestBody AvaliacaoSerie avaliacao) {
+    public ResponseEntity<AvaliacaoSerieResponseDto> salvar(
+            @RequestBody @Valid AvaliacaoSerieRequestDto dto) {
 
-        AvaliacaoSerie nova = service.salvar(avaliacao);
+        AvaliacaoSerieResponseDto response = service.salvar(dto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(nova);
+                .body(response);
     }
 
     @GetMapping
-    @Operation(
-        summary = "Lista todas as avaliações de série",
-        description = "Retorna uma lista de todas as avaliações de série salvas no sistema."
-    )
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Avaliações encontradas"),
-        @ApiResponse(responseCode = "204", description = "Nenhuma avaliação encontrada")
-    })
-    public ResponseEntity<List<AvaliacaoSerie>> listar() {
+    @Operation(summary = "Lista todas as avaliações")
+    public ResponseEntity<List<AvaliacaoSerieResponseDto>> listar() {
 
-        List<AvaliacaoSerie> avaliacoes = service.listar();
+        List<AvaliacaoSerieResponseDto> lista = service.listar();
 
-        if (avaliacoes.isEmpty()) {
+        if (lista.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(avaliacoes);
+        return ResponseEntity.ok(lista);
     }
 
     @GetMapping("/{id}")
-    @Operation(
-        summary = "Busca uma avaliação da série por ID",
-        description = "Retorna os detalhes da avaliação da série correspondentes ao ID fornecido."
-    )
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Avaliação encontrada"),
-        @ApiResponse(responseCode = "404", description = "Avaliação não encontrada")
-    })
-    public ResponseEntity<AvaliacaoSerie> buscar(
+    @Operation(summary = "Busca avaliação por ID")
+    public ResponseEntity<AvaliacaoSerieResponseDto> buscar(
             @PathVariable Long id) {
 
-        AvaliacaoSerie avaliacao = service.buscarPorId(id);
+        AvaliacaoSerieResponseDto dto = service.buscarPorId(id);
 
-        if (avaliacao == null) {
+        if (dto == null) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(avaliacao);
+        return ResponseEntity.ok(dto);
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Atualiza uma avaliação")
+    public ResponseEntity<AvaliacaoSerieResponseDto> atualizar(
+            @PathVariable Long id,
+            @RequestBody @Valid AvaliacaoSerieRequestDto dto) {
+
+        AvaliacaoSerieResponseDto response =
+                service.atualizar(id, dto);
+
+        if (response == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    @Operation(
-        summary = "Deleta uma avaliação da série por ID",
-        description = "Remove a avaliação da série correspondente ao ID fornecido."
-    )
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "204", description = "Avaliação deletada com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Avaliação não encontrada")
-    })
+    @Operation(summary = "Remove uma avaliação")
     public ResponseEntity<Void> deletar(
             @PathVariable Long id) {
 
-        service.deletar(id);
+        boolean deletou = service.deletar(id);
+
+        if (!deletou) {
+            return ResponseEntity.notFound().build();
+        }
 
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/acima-de/{notaMinima}")
-    @Operation(
-        summary = "Lista avaliações de séries com nota maior ou igual a N",
-        description = "Retorna avaliações cuja nota seja maior ou igual ao valor informado."
-    )
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Avaliações encontradas"),
-        @ApiResponse(responseCode = "204", description = "Nenhuma avaliação encontrada"),
-        @ApiResponse(responseCode = "400", description = "Nota está fora do intervalo permitido (0-10)")
-    })
-    public ResponseEntity<List<AvaliacaoSerie>> listarAvaliacoesAcimaDe(
-            @PathVariable Double notaMinima) {
+    @GetMapping("/acima-de/{nota}")
+    @Operation(summary = "Lista avaliações acima da nota")
+    public ResponseEntity<List<AvaliacaoSerieResponseDto>>
+            buscarPorNota(@PathVariable Double nota) {
 
-        List<AvaliacaoSerie> avaliacoes =
-                service.buscarPorNotaMinima(notaMinima);
+        List<AvaliacaoSerieResponseDto> lista =
+                service.buscarPorNotaMinima(nota);
 
-        if (avaliacoes.isEmpty()) {
+        if (lista.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(avaliacoes);
+        return ResponseEntity.ok(lista);
+    }
+
+    @GetMapping("/media/{serieId}")
+    @Operation(summary = "Calcula média das avaliações da série")
+    public ResponseEntity<Double> calcularMedia(
+            @PathVariable Long serieId) {
+
+        Double media = service.calcularMediaPorSerie(serieId);
+
+        return ResponseEntity.ok(media);
     }
 }
