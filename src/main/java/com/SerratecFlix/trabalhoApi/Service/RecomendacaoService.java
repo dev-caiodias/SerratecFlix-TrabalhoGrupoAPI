@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.SerratecFlix.trabalhoApi.Domain.Categoria;
 import com.SerratecFlix.trabalhoApi.Domain.Filme;
 import com.SerratecFlix.trabalhoApi.Domain.Usuario;
-import com.SerratecFlix.trabalhoApi.Dto.Response.FilmeResponse;
+import com.SerratecFlix.trabalhoApi.Dto.Response.FilmeResponseDTO;
 import com.SerratecFlix.trabalhoApi.Repository.CategoriaRepository;
 import com.SerratecFlix.trabalhoApi.Repository.FilmeRepository;
 import com.SerratecFlix.trabalhoApi.Repository.UsuarioRepository;
@@ -24,13 +24,13 @@ public class RecomendacaoService {
 
     private CategoriaRepository categoriaRepository;
 
-    public List<FilmeResponse> obterRecomendacoes(Long usuarioId, Double notaMinima) {
+    public List<FilmeResponseDTO> obterRecomendacoes(Long usuarioId, Double notaMinima) {
 
         /*A nota mínima das recomendações será 7.0, caso o usuario não definir na URI */
         Double notaFiltro = (notaMinima != null) ? notaMinima : 7.0;
         List<Filme> filmes = filmeRepository.buscarRecomendacoes(usuarioId, notaFiltro);
         return filmes.stream().map(filme -> {
-            FilmeResponse response = new FilmeResponse();
+            FilmeResponseDTO response = new FilmeResponseDTO();
             response.setId(filme.getId());
             response.setTitulo(filme.getTitulo());
             response.setDuracao(filme.getDuracao());
