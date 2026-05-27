@@ -3,11 +3,8 @@ package com.SerratecFlix.trabalhoApi.Service;
 import com.SerratecFlix.trabalhoApi.Domain.Usuario;
 import com.SerratecFlix.trabalhoApi.Dto.Request.UsuarioDTORequest;
 import com.SerratecFlix.trabalhoApi.Dto.Response.UsuarioDTOResponse;
-import com.SerratecFlix.trabalhoApi.Exception.ConflictException;
-import com.SerratecFlix.trabalhoApi.Exception.ResourceNotFoundException;
 import com.SerratecFlix.trabalhoApi.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +14,6 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
 
     public Usuario toUsuario(UsuarioDTORequest request){
         Usuario usuario = new Usuario();
@@ -44,7 +38,7 @@ public class UsuarioService {
 
     public UsuarioDTOResponse buscarPorId(Long id){
         Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario não foi encontrado"));
+                .orElseThrow(() -> new ResorceNotFoundException("Usuario não foi encontrado"));
         return toUsuarioResponse(usuario);
     }
 
@@ -68,14 +62,14 @@ public class UsuarioService {
 
     public UsuarioDTOResponse atualizar(Long id, UsuarioDTORequest request){
         Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario não encontrado."));
+                .orElseThrow(() -> new ResorceNotFoundException("Usuario não encontrado."));
 
         usuario.setNome(request.getNome());
         usuario.setEmail(request.getEmail());
         usuario.setUserName(request.getUserName());
 
         if (request.getSenha() != null && !request.getSenha().isBlank()){
-            usuario.setSenha(passwordEncoder.encode(request.getSenha()));
+            usuario.setSenha(passwordEncoder.encode(request.getSenha());
         }
 
         return toUsuarioResponse(usuarioRepository.save(usuario));
@@ -88,4 +82,5 @@ public class UsuarioService {
 
         usuarioRepository.deleteById(id);
     }
+
 }

@@ -1,5 +1,16 @@
 package com.SerratecFlix.trabalhoApi.Domain;
 
+<<<<<<< HEAD
+import java.util.List;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+
+@Entity
+=======
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +27,42 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+>>>>>>> c36d67ed2cc94d266fa452d969a8187058c3785b
 public class Filme {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+<<<<<<< HEAD
+    private String titulo;
+
+    @ManyToMany
+    private List<Categoria> categorias;
+
+    public Filme() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<Categoria> categorias) {
+        this.categorias = categorias;
+    }
+=======
     @Column(nullable = false)
     private String titulo;
 
@@ -59,4 +100,5 @@ public class Filme {
     @JsonIgnore
     @Builder.Default
     private List<ListaFavoritos> listasFavoritos = new ArrayList<>();
+>>>>>>> c36d67ed2cc94d266fa452d969a8187058c3785b
 }

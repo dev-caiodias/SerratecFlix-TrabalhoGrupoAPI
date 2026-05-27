@@ -33,4 +33,8 @@ public class AvaliacaoSerieService {
     public void deletar(Long id) {
         repository.deleteById(id);
     }
+
+    public List<AvaliacaoSerie> buscarPorNotaMinima(Double nota) {
+        return repository.findByNotaGreaterThanEqual(nota);
+    }
 }
