@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class AvaliacaoSerieRequestDTO {
+public class AvaliacaoSerieRequestDto {
 
     @NotNull
     @Min(0)

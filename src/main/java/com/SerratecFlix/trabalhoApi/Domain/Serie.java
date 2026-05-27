@@ -44,8 +44,99 @@ public class Serie {
     @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<AvaliacaoSerie> avaliacoes;
+    
+    @ManyToMany
+    private List<Categoria> categorias; 
 
+<<<<<<< HEAD
+    public Serie() {
+    }
+
+    public Serie(Long id, String titulo, String descricao, Integer temporadas, Integer episodios,
+            LocalDate dataLancamento, Double notaMedia) {
+        this.id = id;
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.temporadas = temporadas;
+        this.episodios = episodios;
+        this.dataLancamento = dataLancamento;
+        this.notaMedia = notaMedia;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public Integer getTemporadas() {
+        return temporadas;
+    }
+
+    public void setTemporadas(Integer temporadas) {
+        this.temporadas = temporadas;
+    }
+
+    public Integer getEpisodios() {
+        return episodios;
+    }
+
+    public void setEpisodios(Integer episodios) {
+        this.episodios = episodios;
+    }
+
+    public LocalDate getDataLancamento() {
+        return dataLancamento;
+    }
+
+    public void setDataLancamento(LocalDate dataLancamento) {
+        this.dataLancamento = dataLancamento;
+    }
+
+    public Double getNotaMedia() {
+        return notaMedia;
+    }
+
+    public void setNotaMedia(Double notaMedia) {
+        this.notaMedia = notaMedia;
+    }
+
+    public List<AvaliacaoSerie> getAvaliacoes() {
+        return avaliacoes;
+    }
+
+    public void setAvaliacoes(List<AvaliacaoSerie> avaliacoes) {
+        this.avaliacoes = avaliacoes;
+    }
+    
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<Categoria> categorias) {
+        this.categorias = categorias;
+    }
+=======
     @ManyToMany(mappedBy = "series")
     @JsonIgnore
     private List<ListaFavoritos> listasFavoritos;
+>>>>>>> c36d67ed2cc94d266fa452d969a8187058c3785b
 }

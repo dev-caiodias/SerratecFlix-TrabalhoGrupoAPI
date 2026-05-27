@@ -34,6 +34,11 @@ public class SerieController {
     public ResponseEntity<List<SerieResponseDTO>> buscarPorTitulo(@RequestParam String titulo) {
         return ResponseEntity.ok(serieService.buscarPorTitulo(titulo));
     }
+    
+    @GetMapping("/{id}/media")
+    public Double obterMedia(@PathVariable Long id) {
+        return service.obterMedia(id);
+    }
 
     @PostMapping
     public ResponseEntity<SerieResponseDTO> cadastrar(@Valid @RequestBody SerieRequestDTO request) {

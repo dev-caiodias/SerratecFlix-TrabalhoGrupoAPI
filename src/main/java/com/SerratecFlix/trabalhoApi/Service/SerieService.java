@@ -1,5 +1,6 @@
 package com.SerratecFlix.trabalhoApi.Service;
 
+import com.SerratecFlix.trabalhoApi.Repository.AvaliacaoSerieRepository;
 import com.SerratecFlix.trabalhoApi.Domain.Serie;
 import com.SerratecFlix.trabalhoApi.Domain.Categoria;
 import com.SerratecFlix.trabalhoApi.Dto.Request.SerieRequestDTO;
@@ -20,11 +21,19 @@ import java.util.stream.Collectors;
 
 @Service
 public class SerieService {
+	
+	@Autowired
+	private AvaliacaoSerieRepository avaliacaoRepository;
+
+
+    @Autowired
+    private SerieRepository repository;
 
     private final SerieRepository serieRepository;
     private final CategoriaRepository categoriaRepository;
     private final AvaliacaoSerieRepository avaliacaoSerieRepository;
     private final OmdbService omdbService;
+
 
     public SerieService(SerieRepository serieRepository, 
                         CategoriaRepository categoriaRepository, 
@@ -170,5 +179,9 @@ public class SerieService {
                 .notaMedia(serie.getNotaMedia())
                 .nomesCategorias(nomesCategorias)
                 .build();
+    }
+    
+    public Double obterMedia(Long idSerie) {
+        return avaliacaoRepository.calcularMedia(idSerie);
     }
 }
