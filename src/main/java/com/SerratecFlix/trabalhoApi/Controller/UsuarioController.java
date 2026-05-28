@@ -87,4 +87,6 @@ public class UsuarioController {
         recomendacaoService.removerPreferenciaUsuario(id, categoriaId);
         return ResponseEntity.noContent().build();
     }
+
 }
+

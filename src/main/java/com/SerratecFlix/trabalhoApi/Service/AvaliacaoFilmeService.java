@@ -14,7 +14,8 @@ import com.SerratecFlix.trabalhoApi.Domain.AvaliacaoFilme;
 import com.SerratecFlix.trabalhoApi.Domain.Usuario;
 import com.SerratecFlix.trabalhoApi.Dto.Request.AvaliacaoFilmeDTOResquest;
 import com.SerratecFlix.trabalhoApi.Dto.Response.AvaliacaoFilmeDTOResponse;
-import com.SerratecFlix.trabalhoApi.Repository.AvaliacaofilmeRepository;
+import com.SerratecFlix.trabalhoApi.Repository.AvaliacaoFilmeRepository;
+import com.SerratecFlix.trabalhoApi.Repository.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -22,13 +23,13 @@ import jakarta.transaction.Transactional;
 public class AvaliacaoFilmeService {
 
     @Autowired
-    private AvaliacaofilmeRepository avaliacaoFilmeRepository;
+    private AvaliacaoFilmeRepository avaliacaoFilmeRepository;
 
     @Autowired
     private FilmeService filmeService;
 
     @Autowired
-    private UsuarioService usuarioService;
+    private UsuarioRepository usuarioRepository;
 
     /*Get para listar todas as avaliações de filmes */
     public List<AvaliacaoFilmeDTOResponse> listarTodos() {
@@ -57,13 +58,15 @@ public class AvaliacaoFilmeService {
     @Transactional
     public AvaliacaoFilmeDTOResponse criar(AvaliacaoFilmeDTOResquest request) {
         /* Verifica se já existe o devido usuario e filme*/
-        Filme filme = filmeService.buscarDomainPorId(request.getFilmeId());
-        Usuario usuario = usuarioService.buscarDomainPorId(request.getUsuarioId());
+        Filme filme = filmeService.findByFilmeId(request.getFilmeId());
+        
+        Usuario usuario = usuarioRepository.findById(request.getUsuarioId())
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado."));
 
         AvaliacaoFilme avaliacaoFilme = new AvaliacaoFilme();
         avaliacaoFilme.setNota(request.getNota());
         avaliacaoFilme.setComentario(request.getComentario());
-        avaliacaoFilme.setDataAvaliação(LocalDateTime.now());
+        avaliacaoFilme.setDataAvaliacao(LocalDateTime.now());
         avaliacaoFilme.setFilme(filme);
         avaliacaoFilme.setUsuario(usuario);
 
@@ -83,12 +86,14 @@ public class AvaliacaoFilmeService {
         /*Atualização caso mude os dados do filme, precisamos recalcular */
         Long antigoFilmeId = avaliacaoFilme.getFilme().getId();
 
-        Filme novoFilme = filmeService.buscarDomainPorId(request.getFilmeId());
-        Usuario usuario = usuarioService.buscarDomainPorId(request.getUsuarioId());
+        Filme novoFilme = filmeService.findByFilmeId(request.getFilmeId());
+        Usuario usuario = usuarioRepository.findById(request.getUsuarioId())
+                            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado."));
+
 
         avaliacaoFilme.setNota(request.getNota());
         avaliacaoFilme.setComentario(request.getComentario());
-        avaliacaoFilme.setFilme(novoFilme.);
+        avaliacaoFilme.setFilme(novoFilme);
         avaliacaoFilme.setUsuario(usuario);
 
         avaliacaoFilme = avaliacaoFilmeRepository.save(avaliacaoFilme);
@@ -123,7 +128,7 @@ public class AvaliacaoFilmeService {
         response.setId(avaliacao.getId());
         response.setNota(avaliacao.getNota());
         response.setComentario(avaliacao.getComentario());
-        response.setDataAvaliacao(avaliacao.getDataAvaliação());
+        response.setDataAvaliacao(avaliacao.getDataAvaliacao());
         
         /* Evita NullPointerException se o relacionamento estiver nulo*/
         if (avaliacao.getUsuario() != null) {

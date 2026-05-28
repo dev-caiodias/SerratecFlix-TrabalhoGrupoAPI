@@ -12,6 +12,7 @@ import com.SerratecFlix.trabalhoApi.Repository.FilmeRepository;
 import com.SerratecFlix.trabalhoApi.Repository.ListaFavoritosRepository;
 import com.SerratecFlix.trabalhoApi.Repository.SerieRepository;
 import com.SerratecFlix.trabalhoApi.Repository.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -102,6 +103,25 @@ public class ListaFavoritosService {
         return listaFavoritosRepository.save(listaFavoritos);
     }
 
+
+    private ListaFavoritos buscarLista(Long id){
+        return listaFavoritosRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Lista não encontrada"));
+    }
+
+
+    public ListaFavoritosDTOResponse compartilhar(Long id){
+        ListaFavoritos listaFavoritos = buscarLista(id);
+        listaFavoritos.setPrivada(false);
+        return toResponse(listaFavoritosRepository.save(listaFavoritos));
+    }
+
+
+    public ListaFavoritosDTOResponse descompartilhar(Long id){
+        ListaFavoritos listaFavoritos = buscarLista(id);
+        listaFavoritos.setPrivada(true);
+        return toResponse(listaFavoritosRepository.save(listaFavoritos));
+    }
 
 
     public void deletar(Long id) {
