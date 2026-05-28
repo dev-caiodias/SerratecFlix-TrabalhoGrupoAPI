@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AvaliacaofilmeRepository extends JpaRepository<AvaliacaoFilme, Long> {
+public interface AvaliacaoFilmeRepository extends JpaRepository<AvaliacaoFilme, Long> {
 
     List<AvaliacaoFilme> findByFilmeId(Long filmeId);
 

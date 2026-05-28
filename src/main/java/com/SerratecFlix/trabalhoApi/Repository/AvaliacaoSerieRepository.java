@@ -14,6 +14,6 @@ public interface AvaliacaoSerieRepository extends JpaRepository<AvaliacaoSerie, 
     List<AvaliacaoSerie> findByNotaGreaterThanEqual(Double nota);
     
     @Query("SELECT AVG(m.nota) FROM AvaliacaoSerie m WHERE m.serie.id = :serieId")
-    Double calcularMediaPorSerie(@Param("serieId") Long serieId);
+    Double calcularMediaPorSerieId(@Param("serieId") Long serieId);
     
 }

@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AvaliacaoSerieRequestDto {
+public class AvaliacaoSerieRequestDTO {
 
     @NotNull
     @Min(0)

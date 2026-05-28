@@ -2,7 +2,7 @@ package com.SerratecFlix.trabalhoApi.Controller;
 
 import java.util.List;
 
-import com.SerratecFlix.trabalhoApi.Dto.Request.AvaliacaoSerieRequestDto;
+import com.SerratecFlix.trabalhoApi.Dto.Request.AvaliacaoSerieRequestDTO;
 import com.SerratecFlix.trabalhoApi.Dto.Response.AvaliacaoSerieResponseDto;
 import com.SerratecFlix.trabalhoApi.Service.AvaliacaoSerieService;
 
@@ -41,7 +41,7 @@ public class AvaliacaoSerieController {
         @ApiResponse(responseCode = "400", description = "Dados inválidos")
     })
     public ResponseEntity<AvaliacaoSerieResponseDto> salvar(
-            @RequestBody @Valid AvaliacaoSerieRequestDto dto) {
+            @RequestBody @Valid AvaliacaoSerieRequestDTO dto) {
 
         AvaliacaoSerieResponseDto response = service.salvar(dto);
 
@@ -81,7 +81,7 @@ public class AvaliacaoSerieController {
     @Operation(summary = "Atualiza uma avaliação")
     public ResponseEntity<AvaliacaoSerieResponseDto> atualizar(
             @PathVariable Long id,
-            @RequestBody @Valid AvaliacaoSerieRequestDto dto) {
+            @RequestBody @Valid AvaliacaoSerieRequestDTO dto) {
 
         AvaliacaoSerieResponseDto response =
                 service.atualizar(id, dto);

@@ -46,7 +46,7 @@ public class Serie {
     @JsonManagedReference
     private List<AvaliacaoSerie> avaliacoes;
 
-    @ManyToMany(mappedBy = "series")
+    @ManyToMany(mappedBy = "serie")
     @JsonIgnore
     private List<ListaFavoritos> listasFavoritos;
 }

@@ -3,7 +3,7 @@ package com.SerratecFlix.trabalhoApi.Controller;
 import com.SerratecFlix.trabalhoApi.Domain.Filme;
 import com.SerratecFlix.trabalhoApi.Dto.Request.CategoriaDTORequest;
 import com.SerratecFlix.trabalhoApi.Dto.Request.UsuarioDTORequest;
-import com.SerratecFlix.trabalhoApi.Dto.Response.FilmeResponse;
+import com.SerratecFlix.trabalhoApi.Dto.Response.FilmeResponseDTO;
 import com.SerratecFlix.trabalhoApi.Dto.Response.UsuarioDTOResponse;
 import com.SerratecFlix.trabalhoApi.Service.RecomendacaoService;
 import com.SerratecFlix.trabalhoApi.Service.UsuarioService;
@@ -70,8 +70,8 @@ public class UsuarioController {
 
     /*CRUD para recomendações de filme - parte do Vitor */
     @GetMapping("/{id}/recomendacoes")
-    public ResponseEntity<List<FilmeResponse>> obterRecomendacoes(@PathVariable Long id, @RequestParam(required = false) Double notaMinima) {
-        List<FilmeResponse> recomendacoes = recomendacaoService.obterRecomendacoes(id, notaMinima);
+    public ResponseEntity<List<FilmeResponseDTO>> obterRecomendacoes(@PathVariable Long id, @RequestParam(required = false) Double notaMinima) {
+        List<FilmeResponseDTO> recomendacoes = recomendacaoService.obterRecomendacoes(id, notaMinima);
         return ResponseEntity.ok(recomendacoes);
     }
 
