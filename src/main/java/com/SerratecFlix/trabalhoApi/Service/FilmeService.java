@@ -9,7 +9,7 @@ import com.SerratecFlix.trabalhoApi.Dto.Request.FilmeRequestDTO;
 import com.SerratecFlix.trabalhoApi.Dto.Response.FilmeResponseDTO;
 import com.SerratecFlix.trabalhoApi.Repository.FilmeRepository;
 import com.SerratecFlix.trabalhoApi.Repository.CategoriaRepository;
-import com.SerratecFlix.trabalhoApi.Repository.AvaliacaofilmeRepository;
+import com.SerratecFlix.trabalhoApi.Repository.AvaliacaoFilmeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class FilmeService {
     private CategoriaRepository categoriaRepository;
 
     @Autowired
-    private AvaliacaofilmeRepository avaliacaoFilmeRepository;
+    private AvaliacaoFilmeRepository avaliacaoFilmeRepository;
 
     public List<FilmeResponseDTO> listarTodos() {
         return filmeRepository.findAll().stream()

@@ -10,7 +10,7 @@ import com.SerratecFlix.trabalhoApi.Domain.AvaliacaoSerie;
 import com.SerratecFlix.trabalhoApi.Domain.Serie;
 import com.SerratecFlix.trabalhoApi.Domain.Usuario;
 
-import com.SerratecFlix.trabalhoApi.Dto.Request.AvaliacaoSerieRequestDto;
+import com.SerratecFlix.trabalhoApi.Dto.Request.AvaliacaoSerieRequestDTO;
 import com.SerratecFlix.trabalhoApi.Dto.Response.AvaliacaoSerieResponseDto;
 
 import com.SerratecFlix.trabalhoApi.Repository.AvaliacaoSerieRepository;
@@ -28,7 +28,7 @@ public class AvaliacaoSerieService {
     private final SerieRepository serieRepository;
 
     public AvaliacaoSerieResponseDto salvar(
-            AvaliacaoSerieRequestDto dto) {
+            AvaliacaoSerieRequestDTO dto) {
 
         Usuario usuario = usuarioRepository
                 .findById(dto.getUsuarioId())
@@ -77,7 +77,7 @@ public class AvaliacaoSerieService {
 
     public AvaliacaoSerieResponseDto atualizar(
             Long id,
-            AvaliacaoSerieRequestDto dto) {
+            AvaliacaoSerieRequestDTO dto) {
 
         AvaliacaoSerie avaliacao =
                 repository.findById(id).orElse(null);

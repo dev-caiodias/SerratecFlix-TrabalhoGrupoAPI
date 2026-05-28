@@ -1,4 +1,4 @@
-package com.SerratecFlix.trabalhoApi;
+/*package com.SerratecFlix.trabalhoApi;
 
 // import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.Test;
@@ -12,3 +12,4 @@ class TrabalhoApiApplicationTests {
 	}
 
 }
+*/

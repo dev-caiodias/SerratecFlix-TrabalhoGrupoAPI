@@ -14,7 +14,9 @@ import com.SerratecFlix.trabalhoApi.Repository.FilmeRepository;
 import com.SerratecFlix.trabalhoApi.Repository.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RecomendacaoService {
 
     @Autowired
